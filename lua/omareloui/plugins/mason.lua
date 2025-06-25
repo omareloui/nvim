@@ -25,7 +25,6 @@ return {
       ensure_installed = {
         "astro",
         "bashls",
-        "bufls",
         "cssls",
         "denols",
         "dockerls",
@@ -39,7 +38,6 @@ return {
         "prismals",
         "tailwindcss",
         "templ",
-        "tsserver",
         "yamlls",
       },
     }

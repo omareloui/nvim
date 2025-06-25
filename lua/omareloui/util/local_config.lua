@@ -32,19 +32,16 @@ M.get = function(key, default)
   local config = M.config()
   local keys = vim.split(key, "%.")
 
-  print("Fetching config for key:", key)
-  print("Parsed config:", vim.inspect(config))
-
   for _, k in ipairs(keys) do
     if config[k] ~= nil then
-      print("Found key:", k, "with value:", vim.inspect(config[k]))
       config = config[k]
-    else
-      print("Key not found:", k)
-      print("Returning default value:", vim.inspect(default))
-      return default
     end
   end
+
+  if config ~= nil then
+    return config
+  end
+  return default
 end
 
 return M

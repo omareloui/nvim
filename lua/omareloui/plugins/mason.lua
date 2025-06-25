@@ -40,7 +40,6 @@ return {
         "tailwindcss",
         "templ",
         "tsserver",
-        "volar",
         "yamlls",
       },
     }

@@ -1,3 +1,5 @@
+-- # vim:ft=lua
+
 return {
   plugins = {
     mason = {

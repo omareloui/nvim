@@ -1,3 +1,5 @@
+local localconfig = require "omareloui.util.local_config"
+
 local languages_to_load = { "typescript" }
 
 ---@param config {args?:string[]|fun():string[]?}
@@ -107,7 +109,7 @@ return {
 
     {
       "jay-babu/mason-nvim-dap.nvim",
-      enabled = false,
+      enabled = localconfig.get("plugins.mason.enabled", false),
       dependencies = "mason.nvim",
       cmd = { "DapInstall", "DapUninstall" },
       opts = {

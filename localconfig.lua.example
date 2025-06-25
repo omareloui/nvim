@@ -2,8 +2,6 @@ return {
   plugins = {
     mason = {
       enabled = false,
-      ensure_installed = { "lua", "python", "javascript" },
-      highlight = { enable = true },
     },
   },
 

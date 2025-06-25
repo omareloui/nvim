@@ -3,7 +3,7 @@ return {
     lspconfig["omnisharp"].setup {
       cmd = {
         "dotnet",
-        require("omareloui.plugins.lsp.lang.system_packages").omnisharp_dll,
+        location = require("omareloui.util.local_config").config().system_packages.omnisharp_dll,
       },
 
       capabilities = capabilities,

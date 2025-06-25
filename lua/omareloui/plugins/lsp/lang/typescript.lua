@@ -9,7 +9,7 @@ return {
         plugins = {
           {
             name = "@vue/typescript-plugin",
-            location = require("omareloui.plugins.lsp.lang.system_packages").vue_lsp,
+            location = require("omareloui.util.local_config").config().system_packages.vue_lsp,
             languages = { "vue" },
           },
         },

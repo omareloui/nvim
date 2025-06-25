@@ -8,9 +8,13 @@
 git clone git@github.com:omareloui/nvim --depth 1 ~/.config/nvim
 ```
 
-Make sure to have to have the `system_packages.lua` pointing to the correct bin path.
+Make sure to have to have the `localconfig.lua` in the right place.
 
 ```bash
 cd ~/.config/nvim
-cp lua/omareloui/plugins/lsp/lang/system_packages.lua.example lua/omareloui/plugins/lsp/lang/system_packages.lua
+mkdir -p ~/.config/nvim-local
+cp localconfig.lua.example ~/.config/nvim-local/localconfig.lua
 ```
+
+After that, you can edit `~/.config/nvim-local/localconfig.lua` to customize
+your Neovim setup.

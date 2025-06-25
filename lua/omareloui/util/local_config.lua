@@ -26,18 +26,23 @@ M.config = function()
   end
 end
 
----@param key string|nil
+---@param key string
 ---@param default any|nil
 M.get = function(key, default)
   local config = M.config()
-  if key and type(key) == "string" then
-    local keys = vim.split(key, "%.")
-    for _, k in ipairs(keys) do
-      if config[k] ~= nil then
-        config = config[k]
-      else
-        return default
-      end
+  local keys = vim.split(key, "%.")
+
+  print("Fetching config for key:", key)
+  print("Parsed config:", vim.inspect(config))
+
+  for _, k in ipairs(keys) do
+    if config[k] ~= nil then
+      print("Found key:", k, "with value:", vim.inspect(config[k]))
+      config = config[k]
+    else
+      print("Key not found:", k)
+      print("Returning default value:", vim.inspect(default))
+      return default
     end
   end
 end

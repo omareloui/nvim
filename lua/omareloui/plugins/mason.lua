@@ -1,9 +1,5 @@
 local localconfig = require "omareloui.util.local_config"
 
-print("plugins.mason.enabled", localconfig.get("plugins.mason.enabled", false))
-print("plugins.mason", localconfig.get("plugins.mason", false))
-print("plugins", localconfig.get("plugins", false))
-
 return {
   "williamboman/mason.nvim",
   enabled = localconfig.get("plugins.mason.enabled", false),

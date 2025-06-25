@@ -4,7 +4,7 @@ local function expand_home(path)
 end
 
 local M = {
-  path = expand_home "~/nvim-local/localconfig.lua",
+  path = expand_home "~/.config/nvim-local/localconfig.lua",
 }
 
 M.config = function()

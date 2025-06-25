@@ -2,7 +2,8 @@ local localconfig = require "omareloui.util.local_config"
 
 return {
   "williamboman/mason.nvim",
-  enabled = localconfig.get("plugins.mason.enabled", false),
+  -- enabled = localconfig.get("plugins.mason.enabled", false),
+  enabled = false,
   event = { "BufReadPost", "BufWritePost", "BufNewFile" },
   dependencies = {
     "williamboman/mason-lspconfig.nvim",

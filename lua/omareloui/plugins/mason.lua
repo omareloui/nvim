@@ -1,11 +1,14 @@
+local localconfig = require "omareloui.util.local_config"
+
 return {
   "williamboman/mason.nvim",
-  enabled = false,
+  enabled = localconfig.get("plugins.mason.enabled", false),
   event = { "BufReadPost", "BufWritePost", "BufNewFile" },
   dependencies = {
     "williamboman/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
   },
+
   cmd = "Mason",
   build = ":MasonUpdate",
   config = function()
@@ -33,7 +36,6 @@ return {
         "html",
         "lua_ls",
         "marksman",
-        -- "nil_ls",
         "prismals",
         "tailwindcss",
         "templ",

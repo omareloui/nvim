@@ -1,6 +1,14 @@
 return {
+  plugins = {
+    mason = {
+      enabled = false,
+      ensure_installed = { "lua", "python", "javascript" },
+      highlight = { enable = true },
+    },
+  },
+
   system_packages = {
     vue_lsp = "/nix/store/.../lib/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin",
     omnisharp_dll = "/nix/store/.../lib/omnisharp-roslyn/OmniSharp.dll",
-  }
+  },
 }

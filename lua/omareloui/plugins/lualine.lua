@@ -56,6 +56,7 @@ return {
           "help",
           "mason",
           "lspinfo",
+          "DressingInput",
           "TelescopePrompt",
         },
         always_divide_middle = true,

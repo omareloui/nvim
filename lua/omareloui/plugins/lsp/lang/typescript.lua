@@ -1,3 +1,14 @@
+local plugins = {}
+
+local vue_lsp_path = require("omareloui.util.local_config").get "system_packages.vue_lsp"
+if vue_lsp_path then
+  table.insert(plugins, {
+    name = "@vue/typescript-plugin",
+    location = vue_lsp_path,
+    languages = { "vue" },
+  })
+end
+
 return {
   setup = function(lspconfig, on_attach, capabilities)
     lspconfig["ts_ls"].setup {
@@ -6,13 +17,7 @@ return {
 
       filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
       init_options = {
-        plugins = {
-          {
-            name = "@vue/typescript-plugin",
-            location = require("omareloui.util.local_config").config().system_packages.vue_lsp,
-            languages = { "vue" },
-          },
-        },
+        plugins = plugins,
       },
 
       capabilities = capabilities,

@@ -1,9 +1,12 @@
+local dll_path = require("omareloui.util.local_config").get "system_packages.omnisharp_dll"
+
 return {
+  enabled = not not dll_path,
   setup = function(lspconfig, on_attach, capabilities)
     lspconfig["omnisharp"].setup {
       cmd = {
         "dotnet",
-        location = require("omareloui.util.local_config").config().system_packages.omnisharp_dll,
+        location = dll_path,
       },
 
       capabilities = capabilities,

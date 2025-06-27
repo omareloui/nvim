@@ -1,5 +1,12 @@
-local dotfiles = os.getenv "DOTFILES_CONFIG" or os.getenv "HOME" .. "/.dotfiles/config"
-local nvim_config = dotfiles .. "/nvim"
+local nvim_config
+
+local windows_home = os.getenv("USERPROFILE")
+if windows_home then
+    nvim_config = windows_home .. "/AppData/Local/nvim"
+else
+  local config = os.getenv "XDG_CONFIG_HOME" or os.getenv "HOME" .. "/.config"
+  nvim_config = config .. "/nvim"
+end
 
 local format_opts = {
   lsp_fallback = true,

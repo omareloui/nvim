@@ -5,10 +5,6 @@ return {
 
   setup = function(dap)
     if not dap.adapters["pwa-node"] then
-      local ok, mason_registry = pcall(require, "mason-registry")
-      -- stylua: ignore
-      if not ok then return end
-
       dap.adapters["pwa-node"] = {
         type = "server",
         host = "localhost",
@@ -16,7 +12,7 @@ return {
         executable = {
           command = "node",
           args = {
-            mason_registry.get_package("js-debug-adapter"):get_install_path() .. "/js-debug/src/dapDebugServer.js",
+            vim.fn.exepath "js-debug-adapter" .. "/js-debug/src/dapDebugServer.js",
             "${port}",
           },
         },

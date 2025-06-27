@@ -52,6 +52,7 @@ return {
         "golangci-lint",
         "hadolint",
         "htmlhint",
+        "js-debug-adapter",
         "luacheck",
         "markdownlint",
         "prettier",

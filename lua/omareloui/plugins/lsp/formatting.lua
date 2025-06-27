@@ -1,8 +1,8 @@
 local nvim_config
 
-local windows_home = os.getenv("USERPROFILE")
-if windows_home then
-    nvim_config = windows_home .. "/AppData/Local/nvim"
+local windows_app_data = os.getenv "LOCALAPPDATA"
+if windows_app_data then
+  nvim_config = windows_app_data .. "/nvim"
 else
   local config = os.getenv "XDG_CONFIG_HOME" or os.getenv "HOME" .. "/.config"
   nvim_config = config .. "/nvim"

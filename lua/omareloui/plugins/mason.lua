@@ -33,6 +33,8 @@ return {
         "eslint",
         "gopls",
         "html",
+        "jinja_lsp",
+        "jsonls",
         "lua_ls",
         "marksman",
         "prismals",

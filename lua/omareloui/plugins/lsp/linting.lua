@@ -71,13 +71,16 @@ return {
       end,
     })
 
-    local ignore_virtual_text_for = { "cspell" }
-    for _, ln in pairs(ignore_virtual_text_for) do
-      local ns = require("lint").get_namespace(ln)
-      vim.diagnostic.config({ virtual_text = false }, ns)
-    end
+    local cspell_ns = lint.get_namespace "cspell"
 
-    local set = require("omareloui.util.keymap").set
-    set("<leader>ll", lint.try_lint, "Trigger linting for current file.")
+    vim.diagnostic.config({
+      virtual_text = false,
+      signs = false,
+    }, cspell_ns)
+
+    lint.linters.cspell = require("lint.util").wrap(lint.linters.cspell, function(diagnostic)
+      diagnostic.severity = vim.diagnostic.severity.HINT
+      return diagnostic
+    end)
   end,
 }

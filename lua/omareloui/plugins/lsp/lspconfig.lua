@@ -58,6 +58,7 @@ return {
       local d = vim.diagnostic
       local l = vim.lsp
 
+      local diagnostic_utils = require "omareloui.util.diagnostics-utils"
       local set = require("omareloui.util.keymap").set
 
       set("gt", l.buf.type_definition, "Lsp definition type")
@@ -83,8 +84,9 @@ return {
       -- NOTE: comment if lspsaga is on
       set("<leader>?", d.open_float, "Floating diagnostic")
       set("<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", "Show buffer diagnostics")
-      set("[d", d.goto_prev, "Go to previous diagnostic")
-      set("]d", d.goto_next, "Go to next diagnostic")
+
+      set("[d", diagnostic_utils.jump_prev, "Go to previous diagnostic")
+      set("]d", diagnostic_utils.jump_next, "Go to next diagnostic")
 
       local ok, wk = pcall(require, "which-key")
 

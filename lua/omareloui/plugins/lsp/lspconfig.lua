@@ -143,8 +143,34 @@ return {
       float = { border = "rounded" },
     }
 
-    -- Add templ as a filetype
-    vim.filetype.add { extension = { templ = "templ" } }
+    vim.filetype.add {
+      extension = {
+        templ = "templ",
+        mdx = "markdown",
+
+        j2 = "jinja",
+      },
+      pattern = {
+        [".*/hypr/.*%.conf"] = "hyprlang",
+
+        -- Ansible
+        [".*/roles/.*%.ya?ml"] = "yaml.ansible",
+        [".*/playbooks/.*%.ya?ml"] = "yaml.ansible",
+        [".*/defaults/.*%.ya?ml"] = "yaml.ansible",
+        [".*/vars/.*%.ya?ml"] = "yaml.ansible",
+        [".*/meta/.*%.ya?ml"] = "yaml.ansible",
+        [".*/tasks/.*%.ya?ml"] = "yaml.ansible",
+        [".*/handlers/.*%.ya?ml"] = "yaml.ansible",
+        [".*/host_vars/.*%.ya?ml"] = "yaml.ansible",
+
+        -- Jinja templates
+        [".*/.*%.html%.j2"] = "jinja.html",
+
+        -- Angular components
+        [".*/.*%.component%.html?"] = "htmlangular",
+        [".*/.*%.container%.html?"] = "htmlangular",
+      },
+    }
 
     -- Configure the servers themselves
     for _, lsp_server in ipairs(language_server_to_load) do

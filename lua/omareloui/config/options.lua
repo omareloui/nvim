@@ -76,34 +76,6 @@ vim.opt.iskeyword:append "-"
 -- stop continuous comments
 vim.api.nvim_create_autocmd("FileType", { command = "set formatoptions-=cro" })
 
-vim.filetype.add {
-  extension = {
-    mdx = "markdown",
-
-    j2 = "jinja",
-  },
-  pattern = {
-    [".*/hypr/.*%.conf"] = "hyprlang",
-
-    -- Ansible
-    [".*/roles/.*%.ya?ml"] = "yaml.ansible",
-    [".*/playbooks/.*%.ya?ml"] = "yaml.ansible",
-    [".*/defaults/.*%.ya?ml"] = "yaml.ansible",
-    [".*/vars/.*%.ya?ml"] = "yaml.ansible",
-    [".*/meta/.*%.ya?ml"] = "yaml.ansible",
-    [".*/tasks/.*%.ya?ml"] = "yaml.ansible",
-    [".*/handlers/.*%.ya?ml"] = "yaml.ansible",
-    [".*/host_vars/.*%.ya?ml"] = "yaml.ansible",
-
-    -- Jinja templates
-    [".*/.*%.html%.j2"] = "jinja.html",
-
-    -- Angular components
-    [".*/.*%.component%.html?"] = "htmlangular",
-    [".*/.*%.container%.html?"] = "htmlangular",
-  },
-}
-
 -- Neovide options
 vim.g.neovide_hide_mouse_when_typing = true
 vim.g.neovide_no_idle = true

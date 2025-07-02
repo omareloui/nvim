@@ -57,5 +57,6 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   keys = {
     { "-", "<Cmd>Oil<CR>", { desc = "Open parent directory" } },
+    { "<leader>e", "<Cmd>50 vsplit Oil<CR>", { desc = "Open oil in vsplit" } },
   },
 }

@@ -40,12 +40,14 @@ return {
         "prismals",
         "tailwindcss",
         "templ",
+        "ts_ls",
         "yamlls",
       },
     }
 
     mason_tool_installer.setup {
       ensure_installed = {
+        "black",
         "buf",
         "buildifier",
         "cspell",

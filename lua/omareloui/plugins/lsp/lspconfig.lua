@@ -31,8 +31,13 @@ return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPost", "BufWritePost", "BufNewFile" },
   dependencies = {
-    { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
-    { "folke/neodev.nvim", opts = {} },
+    { "folke/lazydev.nvim", opts = {} },
+    {
+      "folke/neoconf.nvim",
+      cmd = "Neoconf",
+      opts = {},
+      dependencies = { "nvim-lspconfig" },
+    },
     "hrsh7th/cmp-nvim-lsp",
     {
       "antosha417/nvim-lsp-file-operations",

@@ -4,16 +4,23 @@ return {
   cmd = { "TroubleToggle", "Trouble" },
   keys = {
     -- stylua: ignore start
-    { "<leader>xx", function() require("trouble").toggle() end, desc = "Toggle trouble" },
+    { "<leader>xx", "<Cmd>Trouble diagnostics toggle filter.not.severity = vim.diagnostic.severity.HINT<CR>", desc = "Diagnostics (Trouble)" },
+    { "<leader>xX", "<Cmd>Trouble diagnostics toggle filter.buf=0 filter.not.severity=vim.diagnostic.severity.INFO<CR>", desc = "Buffer Diagnostics (Trouble)" },
+    { "<leader>xs", "<Cmd>Trouble symbols toggle focus=false<CR>", desc = "Symbols (Trouble)" },
+    { "<leader>xl", "<Cmd>Trouble lsp toggle focus=false win.position=right<CR>", desc = "LSP Definitions / references / ... (Trouble)" },
+    { "<leader>xL", "<Cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
+    { "<leader>xq", "<Cmd>Trouble qflist toggle<CR>", desc = "Quickfix List (Trouble)" },
+
     { "<leader>xw", function() require("trouble").toggle "workspace_diagnostics" end, desc = "Toggle workspace diagnostics (Trouble)" },
     { "<leader>xd", function() require("trouble").toggle "document_diagnostics" end, desc = "Toggle document diagnostics (Trouble)" },
+
     -- stylua: ignore end
     {
       "[q",
       function()
         local trouble = require "trouble"
         if trouble.is_open() then
-          trouble.previous { skip_groups = true, jump = true }
+          trouble.prev { skip_groups = true, jump = true }
         else
           local ok, err = pcall(vim.cmd.cprev)
           if not ok then
@@ -48,7 +55,7 @@ return {
 
     local opts = {
       use_diagnostic_signs = true,
-      -- severity = vim.diagnostic.WARN,
+      severity = vim.diagnostic.severity.INFO,
     }
 
     local wk = require "which-key"

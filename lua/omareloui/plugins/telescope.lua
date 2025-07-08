@@ -3,6 +3,7 @@ return {
   event = "VeryLazy",
   dependencies = {
     "nvim-lua/plenary.nvim",
+    "nvim-telescope/telescope-live-grep-args.nvim",
     {
       "nvim-telescope/telescope-fzf-native.nvim",
       build = "make",
@@ -18,6 +19,8 @@ return {
     if not present then
       return
     end
+
+    local lga_actions = require "telescope-live-grep-args.actions"
 
     local has_trouble_plugin = require "omareloui.util.has_plugin" "trouble.nvim"
 
@@ -84,13 +87,30 @@ return {
         color_devicons = true,
         mappings = mappings,
       },
+      extensions = {
+        live_grep_args = {
+          auto_quoting = true,
+          mappings = {
+            i = {
+              ["<C-k>"] = lga_actions.quote_prompt(),
+              ["<C-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
+              ["<C-space>"] = lga_actions.to_fuzzy_refine,
+            },
+            n = {
+              ["<C-k>"] = lga_actions.quote_prompt(),
+              ["<C-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
+              ["<C-space>"] = lga_actions.to_fuzzy_refine,
+            },
+          },
+        },
+      },
     }
 
     telescope.setup(options)
+    telescope.load_extension "live_grep_args"
 
     local set = require("omareloui.util.keymap").set
 
-    -- stylua: ignore start
     set("<leader>ff", "<Cmd>Telescope find_files follow=true hidden=true<CR>", "Find files")
     set("<leader>fa", "<Cmd>Telescope find_files follow=true hidden=true no_ignore=true<CR>", "Find all")
     set("<leader>fo", "<Cmd>Telescope oldfiles<CR>", "Find in recent opened files")
@@ -100,8 +120,7 @@ return {
     set("<leader>fk", "<Cmd>Telescope keymaps<CR>", "Show key mappings")
     set("<leader>fn", "<Cmd>Telescope file_browser files=false hide_parent_dir=true<CR>", "Open file browser")
     set("<leader>fr", "<Cmd>Telescope file_browser cwd=~/repos<CR>", "Open all repos")
-    -- set("<leader>ft", "<Cmd>Telescope file_browser hidden=true repect_gitignore=false collapse_dirs=true<CR>", "Open file browser")
-    -- stylua: ignore end
+    set("<leader>fg", telescope.extensions.live_grep_args.live_grep_args, "Live grep with args")
 
     set("<leader>gs", "<Cmd>Telescope git_status<CR>", "Git status")
 

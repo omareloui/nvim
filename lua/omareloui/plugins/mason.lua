@@ -38,6 +38,8 @@ return {
         "lua_ls",
         "marksman",
         "prismals",
+        "pylsp",
+        "pyright",
         "tailwindcss",
         "templ",
         "ts_ls",

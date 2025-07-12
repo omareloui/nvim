@@ -22,55 +22,11 @@ return {
     }
 
     mason_lspconfig.setup {
-      ensure_installed = {
-        "astro",
-        "bashls",
-        "cssls",
-        "denols",
-        "dockerls",
-        "elixirls",
-        "emmet_ls",
-        "eslint",
-        "gopls",
-        "html",
-        "jinja_lsp",
-        "jsonls",
-        "lua_ls",
-        "marksman",
-        "prismals",
-        "pylsp",
-        "pyright",
-        "tailwindcss",
-        "templ",
-        "ts_ls",
-        "yamlls",
-      },
+      ensure_installed = localconfig.get("plugins.mason.ensure_installed", {}),
     }
 
     mason_tool_installer.setup {
-      ensure_installed = {
-        "black",
-        "buf",
-        "buildifier",
-        "cspell",
-        "eslint_d",
-        "gitlint",
-        "golangci-lint",
-        "hadolint",
-        "htmlhint",
-        "js-debug-adapter",
-        "luacheck",
-        "markdownlint",
-        "prettier",
-        "prettierd",
-        "shellcheck",
-        "shfmt",
-        "sql-formatter",
-        "sqlfluff",
-        "stylua",
-        "yamlfmt",
-        "yamllint",
-      },
+      ensure_installed = localconfig.get("plugins.mason.tools_ensure_installed", {}),
     }
   end,
 }

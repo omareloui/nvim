@@ -114,13 +114,12 @@ return {
     set("<leader>ff", "<Cmd>Telescope find_files follow=true hidden=true<CR>", "Find files")
     set("<leader>fa", "<Cmd>Telescope find_files follow=true hidden=true no_ignore=true<CR>", "Find all")
     set("<leader>fo", "<Cmd>Telescope oldfiles<CR>", "Find in recent opened files")
-    set("<leader>fw", "<Cmd>Telescope live_grep<CR>", "Live grep")
     set("<leader>fb", "<Cmd>Telescope buffers<CR>", "Search in buffers")
     set("<leader>fh", "<Cmd>Telescope help_tags<CR>", "Find in help tags")
     set("<leader>fk", "<Cmd>Telescope keymaps<CR>", "Show key mappings")
     set("<leader>fn", "<Cmd>Telescope file_browser files=false hide_parent_dir=true<CR>", "Open file browser")
     set("<leader>fr", "<Cmd>Telescope file_browser cwd=~/repos<CR>", "Open all repos")
-    set("<leader>fg", telescope.extensions.live_grep_args.live_grep_args, "Live grep with args")
+    set("<leader>fw", telescope.extensions.live_grep_args.live_grep_args, "Live grep with args")
 
     set("<leader>gs", "<Cmd>Telescope git_status<CR>", "Git status")
 

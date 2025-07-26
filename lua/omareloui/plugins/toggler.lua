@@ -5,7 +5,9 @@ return {
   keys = {
     {
       "<leader>cl",
-      require("nvim-toggler").toggle,
+      function()
+        require("nvim-toggler").toggle()
+      end,
       desc = "Toggle the cursor word (eg. from true to false)",
       mode = { "n", "v" },
     },

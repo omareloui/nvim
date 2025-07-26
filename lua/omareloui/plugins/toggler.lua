@@ -4,9 +4,8 @@ return {
   event = { "BufReadPost", "BufWritePost", "BufNewFile" },
   keys = {
     {
-      "<leader>/",
-      -- stylua: ignore
-      function() require("nvim-toggler").toggle() end,
+      "<leader>cl",
+      require("nvim-toggler").toggle,
       desc = "Toggle the cursor word (eg. from true to false)",
       mode = { "n", "v" },
     },

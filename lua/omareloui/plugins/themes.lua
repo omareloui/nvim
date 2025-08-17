@@ -36,7 +36,7 @@ return {
 
   {
     "catppuccin/nvim",
-    enabled = false,
+    enabled = true,
     name = "catppuccin",
     lazy = false,
     priority = 1000,
@@ -47,7 +47,7 @@ return {
       if not present then return end
 
       local opts = {
-        -- transparent_background = true,
+        transparent_background = true,
         flavour = "mocha",
         integrations = {
           aerial = true,

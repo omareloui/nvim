@@ -140,9 +140,11 @@ return {
       underline = true,
       update_in_insert = false,
       virtual_text = {
+        current_line = true,
         source = true,
         prefix = require("omareloui.config.ui.icons").diagnostics_virtuals.prefix,
       },
+      -- virtual_lines = { current_line = true },
       signs = true,
       severity_sort = true,
       float = { border = "rounded" },

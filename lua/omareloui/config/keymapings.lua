@@ -1,8 +1,6 @@
 local set = require("omareloui.util.keymap").set
 
 -- Navigate insert mode
--- set("jk", "<Esc>", "Exit insert mode", { nowait = true, mode = { "i" } })
-
 set("k", "v:count == 0 ? 'gk' : 'k'", "Move up", { expr = true, silent = true, mode = { "n", "x" } })
 set("j", "v:count == 0 ? 'gj' : 'j'", "Move down", { expr = true, silent = true, mode = { "n", "x" } })
 set("<Up>", "v:count == 0 ? 'gk' : 'k'", "Move up", { expr = true, silent = true, mode = { "n", "x" } })
@@ -50,3 +48,6 @@ set("<leader>j", "<Cmd>m .+1<CR>==", "Move the line down")
 set("<leader>k", "<Cmd>m .-2<CR>==", "Move the line up")
 set("K", ":m '<-2<CR>gv=gv", "Move the line up", { mode = { "v" } })
 set("J", ":m '>+1<CR>gv=gv", "Move the line down", { mode = { "v" } })
+
+-- Spelling
+set("<leader>cz", "1z=", "Select the first spelling suggestion", { mode = { "n", "v" } })

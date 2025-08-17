@@ -48,6 +48,9 @@ return {
 
       local opts = {
         transparent_background = true,
+        float = {
+          transparent = true,
+        },
         flavour = "mocha",
         integrations = {
           aerial = true,

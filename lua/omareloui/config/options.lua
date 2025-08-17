@@ -64,7 +64,7 @@ opt.timeoutlen = 300
 opt.updatetime = 200
 opt.diffopt = "vertical"
 opt.cmdheight = 1
--- opt.smoothscroll = true
+opt.winborder = "rounded"
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line

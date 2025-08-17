@@ -1,6 +1,7 @@
 return {
   {
     "folke/tokyonight.nvim",
+    enabled = false,
     lazy = false,
     priority = 1000,
 
@@ -35,10 +36,10 @@ return {
 
   {
     "catppuccin/nvim",
+    enabled = false,
     name = "catppuccin",
     lazy = false,
     priority = 1000,
-    enabled = false,
     config = function()
       local present, catppuccin = pcall(require, "catppuccin")
 

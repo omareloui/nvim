@@ -1,1 +1,2 @@
-require "omareloui.config.lazy"
+-- require "omareloui.config.lazy"
+require "minimal"

@@ -1,0 +1,96 @@
+local local_config = require "common.local_config"
+
+local servers_config = local_config.get("lsp.servers", {}) --[[@as table<string, table>]]
+
+vim.lsp.enable(vim.tbl_keys(servers_config))
+for server, config in pairs(servers_config) do
+  if config then
+    vim.lsp.config(server, config)
+  end
+end
+
+vim.filetype.add {
+  extension = {
+    templ = "templ",
+    mdx = "markdown",
+
+    j2 = "jinja",
+  },
+  pattern = {
+    [".*/hypr/.*%.conf"] = "hyprlang",
+
+    [".*/.*%.html%.j2"] = "jinja.html",
+
+    [".*/.*%.component%.html?"] = "htmlangular",
+    [".*/.*%.container%.html?"] = "htmlangular",
+  },
+}
+
+vim.diagnostic.config {
+  float = { border = "rounded", source = "if_many" },
+  severity_sort = true,
+  underline = true,
+  update_in_insert = true,
+  virtual_text = {
+    current_line = true,
+    prefix = require("common.ui.icons").diagnostics_virtuals.prefix,
+    source = true,
+    spacing = 2,
+  },
+  signs = vim.g.have_nerd_font and { text = require("common.ui.icons").diagnostics } or {},
+}
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
+
+  callback = function(event)
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+    -- Attatch `ts_ls` specific keymaps
+    if client and client.name == "ts_ls" then
+      vim.keymap.set("n", "<leader>co", function()
+        vim.lsp.buf.code_action {
+          apply = true,
+          context = {
+            only = { "source.organizeImports.ts" },
+            diagnostics = {},
+          },
+        }
+      end, { desc = "Organize Imports", buffer = event.buf })
+
+      vim.keymap.set("n", "<leader>cr", function()
+        vim.lsp.buf.code_action {
+          apply = true,
+          context = {
+            only = { "source.removeUnused.ts" },
+            diagnostics = {},
+          },
+        }
+      end, { desc = "Remove Unused Imports", buffer = event.buf })
+    end
+
+    -- When you move your cursor, the highlights will be cleared (the second autocommand).
+    if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
+      local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+      vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+        buffer = event.buf,
+        group = highlight_augroup,
+        callback = vim.lsp.buf.document_highlight,
+      })
+
+      vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+        buffer = event.buf,
+        group = highlight_augroup,
+        callback = vim.lsp.buf.clear_references,
+      })
+
+      vim.api.nvim_create_autocmd("LspDetach", {
+        group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+        callback = function(event2)
+          vim.lsp.buf.clear_references()
+          vim.api.nvim_clear_autocmds { group = "kickstart-lsp-highlight", buffer = event2.buf }
+        end,
+      })
+    end
+  end,
+})

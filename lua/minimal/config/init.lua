@@ -62,34 +62,34 @@ vim.api.nvim_create_autocmd("FileType", { command = "set formatoptions-=cro" })
 
 --- Global keybindings ---
 
---stylua: ignore start
-vim.keymap.set("n", "<leader>so", "<cmd>up | so %<cr>")
-vim.keymap.set("n", "<leader>w", "<cmd>write<cr>")
-vim.keymap.set("n", "<esc>", "<cmd>noh<cr>")
+local set = require("common.keymap").set
 
-vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc =  "Move up", expr = true, silent = true })
-vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc =  "Move down", expr = true, silent = true })
+set("<leader>so", "<cmd>up | so %<cr>", "Save and source current file")
+set("<leader>w", "<cmd>write<cr>", "Save file")
+set("<esc>", "<cmd>noh<cr>", "Clear search highlights", { silent = true })
 
-vim.keymap.set("v", "<", "<gv", { desc =  "Indent line backwards" })
-vim.keymap.set("v", ">", ">gv", { desc =  "Indent line forwards" })
+set("k", "v:count == 0 ? 'gk' : 'k'", "Move up", { expr = true, silent = true, mode = { "n", "x" } })
+set("j", "v:count == 0 ? 'gj' : 'j'", "Move down", { expr = true, silent = true, mode = { "n", "x" } })
 
-vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc =  "Yank to the system clipboard", remap = true })
-vim.keymap.set({ "n" }, "<leader>Y", '"+Y', { desc =  "Yank to the system clipboard", remap = true })
-vim.keymap.set({ "n", "v" }, "<leader>p", '"+p', { desc =  "Paste from the system clipboard", remap = true })
-vim.keymap.set({ "n" }, "<leader>P", '"+P', { desc =  "Paste from the system clipboard", remap = true })
-vim.keymap.set({ "v", "x" },"p", 'p:let @"=@0<CR>', { desc =  "Paste without overwriting the register", silent = true, remap = true })
+set("<", "<gv", "Indent line backwards", { mode = "v" })
+set(">", ">gv", "Indent line forwards", { mode = "v" })
 
-vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc =  "Move down half a page" })
-vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc =  "Move up half a page" })
-vim.keymap.set("n", "n", "nzzzv", { desc =  "Find next" })
-vim.keymap.set("n", "N", "Nzzzv", { desc =  "Find previous" })
+set("<leader>y", '"+y', "Yank to the system clipboard", { remap = true, mode = { "n", "v" } })
+set("<leader>Y", '"+Y', "Yank to the system clipboard", { remap = true })
+set("<leader>p", '"+p', "Paste from the system clipboard", { remap = true, mode = { "n", "v" } })
+set("<leader>P", '"+P', "Paste from the system clipboard", { remap = true })
+set("p", 'p:let @"=@0<CR>', "Paste and keep the registry", { silent = true, remap = true, mode = { "v", "x" } })
 
-vim.keymap.set("n", "<leader>su", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", { desc =  "Replace current word" })
+set("<C-d>", "<C-d>zz", "Move down half a page")
+set("<C-u>", "<C-u>zz", "Move up half a page")
+set("n", "nzzzv", "Find next")
+set("N", "Nzzzv", "Find previous")
 
-vim.keymap.set({ "n", "v" }, "<leader>cz", "1z=", { desc =  "Select the first spelling suggestion" })
+set("<leader>su", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", "Replace current word")
 
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
---stylua: ignore end
+set("<leader>cz", "1z=", "Select the first spelling suggestion", { mode = { "n", "v" } })
+
+set("<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode", { mode = "t" })
 
 --- Global autocommands ---
 
@@ -123,7 +123,8 @@ vim.api.nvim_create_autocmd("FileType", {
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
-    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+    local set = require("common.keymap").set
+    set("q", "<cmd>close<cr>", "Close window", { buffer = event.buf, silent = true })
   end,
 })
 

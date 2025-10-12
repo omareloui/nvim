@@ -55,7 +55,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     -- Attatch `ts_ls` specific keymaps
     if client and client.name == "ts_ls" then
-      vim.keymap.set("n", "<leader>co", function()
+      set("<leader>co", function()
         vim.lsp.buf.code_action {
           apply = true,
           context = {
@@ -63,9 +63,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
             diagnostics = {},
           },
         }
-      end, { desc = "Organize Imports", buffer = event.buf })
+      end, "Organize Imports", { buffer = event.buf })
 
-      vim.keymap.set("n", "<leader>cr", function()
+      set("<leader>cr", function()
         vim.lsp.buf.code_action {
           apply = true,
           context = {
@@ -73,7 +73,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
             diagnostics = {},
           },
         }
-      end, { desc = "Remove Unused Imports", buffer = event.buf })
+      end, "Remove Unused Imports", { buffer = event.buf })
     end
 
     -- Attatch `gopls` specific keymaps and autocommands

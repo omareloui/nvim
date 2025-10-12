@@ -46,6 +46,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(event)
     local client = vim.lsp.get_client_by_id(event.data.client_id)
 
+    -- Remaps
+    local set = require("common.keymap").set
+    local diagnostic_utils = require "common.diagnostics-utils"
+
+    set("[d", diagnostic_utils.jump_prev, "Go to previous diagnostic")
+    set("]d", diagnostic_utils.jump_next, "Go to next diagnostic")
+
     -- Attatch `ts_ls` specific keymaps
     if client and client.name == "ts_ls" then
       vim.keymap.set("n", "<leader>co", function()
@@ -69,6 +76,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       end, { desc = "Remove Unused Imports", buffer = event.buf })
     end
 
+    -- Attatch `gopls` specific keymaps and autocommands
     if client and client.name == "gopls" then
       vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = "*.go",

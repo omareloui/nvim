@@ -1,4 +1,4 @@
-local function get_oil_winbar()
+_G.get_oil_winbar = function()
   local bufnr = vim.api.nvim_win_get_buf(vim.g.statusline_winid)
   local dir = require("oil").get_current_dir(bufnr)
   if dir then
@@ -20,12 +20,7 @@ return {
   end,
 
   config = function()
-    local ok, oil = pcall(require, "oil")
-
-    -- stylua: ignore
-    if not ok then return end
-
-    _G.get_oil_winbar = get_oil_winbar
+    local oil = require "oil"
 
     local show_detail = false
 
@@ -54,9 +49,9 @@ return {
     }
   end,
 
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  dependencies = { "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
+
   keys = {
     { "-", "<Cmd>Oil<CR>", { desc = "Open parent directory" } },
-    { "<leader>e", ":50 vsplit<CR> -", { desc = "Open oil in vsplit" } },
   },
 }

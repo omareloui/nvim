@@ -2,6 +2,7 @@ return {
   "nguyenvukhang/nvim-toggler",
   enabled = true,
   event = { "BufReadPost", "BufWritePost", "BufNewFile" },
+
   keys = {
     {
       "<leader>cl",
@@ -12,11 +13,11 @@ return {
       mode = { "n", "v" },
     },
   },
+
   opts = {
     remove_default_keybinds = true,
     inverses = {
       ["True"] = "False",
-      ["vim"] = "emacs",
       ["right"] = "left",
       ["Right"] = "Left",
     },

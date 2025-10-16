@@ -19,14 +19,14 @@ vim.opt.rtp:prepend(lazypath)
 local lazyopts = {
   ui = { border = "rounded" },
   change_detection = { notify = false },
-  -- checker = { enabled = true, notify = false },
+  checker = { enabled = true, notify = false },
 }
 
 require("lazy").setup({
   { import = "omareloui.plugins" },
-  { import = "omareloui.plugins.lsp" },
-  { import = "omareloui.plugins.dap" },
+  { import = "omareloui.lsp.plugins" },
 }, lazyopts)
 
-require "omareloui.config"
+require "omareloui.config.init"
+require "omareloui.lsp.init"
 require "omareloui.config.theme"

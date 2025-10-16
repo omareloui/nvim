@@ -2,7 +2,7 @@ return {
   "ThePrimeagen/harpoon",
   event = "VeryLazy",
 
-  -- stylua: ignore
+  --stylua: ignore
   keys = {
     { "<leader>ho", function() require("harpoon.ui").toggle_quick_menu() end, desc = "Open Harpoon menu" },
     { "<leader>ha", function() require("harpoon.mark").add_file() end, desc = "Add to Harpoon" },
@@ -16,19 +16,5 @@ return {
     { "<A-6>", function() require("harpoon.ui").nav_file(6) end, desc = "Go to Harpoon file 6" },
   },
 
-  config = function()
-    local ok, harpoon = pcall(require, "harpoon")
-
-    -- stylua: ignore
-    if not ok then return end
-
-    harpoon.setup()
-
-    local wk_ok, wk = pcall(require, "which-key")
-
-    -- stylua: ignore
-    if not wk_ok then return end
-
-    wk.add { { "<leader>h", group = "harpoon" } }
-  end,
+  opts = {},
 }

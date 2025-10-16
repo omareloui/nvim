@@ -2,6 +2,7 @@ return {
   "swaits/zellij-nav.nvim",
   lazy = true,
   event = "VeryLazy",
+
   keys = {
     { "<A-h>", "<Cmd>ZellijNavigateLeftTab<CR>", { silent = true, desc = "Navigate left or tab" } },
     { "<A-j>", "<Cmd>ZellijNavigateDown<CR>", { silent = true, desc = "Navigate down" } },
@@ -10,10 +11,7 @@ return {
   },
 
   config = function()
-    local ok, zellij_nav = pcall(require, "zellij-nav")
-
-    -- stylua: ignore
-    if not ok then return end
+    local zellij_nav = require "zellij-nav"
 
     vim.api.nvim_create_autocmd("VimLeave", {
       pattern = "*",

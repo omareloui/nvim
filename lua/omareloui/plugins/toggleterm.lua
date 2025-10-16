@@ -1,15 +1,10 @@
 return {
   "akinsho/toggleterm.nvim",
-  enable = true,
   event = { "BufReadPost", "BufWritePost", "BufNewFile" },
   config = function()
-    local present, toggleterm = pcall(require, "toggleterm")
-
-    -- stylua: ignore
-    if not present then return end
+    local toggleterm = require "toggleterm"
 
     local opts = {
-      size = 20,
       open_mapping = [[<c-\>]],
       hide_numbers = true,
       shade_filetypes = {},
@@ -22,7 +17,13 @@ return {
       close_on_exit = true,
       shell = vim.o.shell,
       float_opts = {
-        border = "curved",
+        width = function(term)
+          return vim.o.columns
+        end,
+        height = function(term)
+          return vim.o.lines
+        end,
+        border = "shadow",
         winblend = 0,
         highlights = {
           border = "Normal",
@@ -53,7 +54,7 @@ return {
       lazygit:toggle()
     end
 
-    local set = require("omareloui.util.keymap").set
+    local set = require("common.keymap").set
     set("<leader>gg", "<Cmd>lua _LAZYGIT_TOGGLE()<CR>", "Open lazygit")
   end,
 }

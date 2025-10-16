@@ -1,7 +1,6 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    version = false,
     event = { "VeryLazy", "BufReadPost", "BufWritePost", "BufNewFile" },
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     build = ":TSUpdate",
@@ -12,14 +11,12 @@ return {
     dependencies = {
       {
         "HiPhish/rainbow-delimiters.nvim",
-        enabled = true,
         config = function()
           require("rainbow-delimiters.setup").setup {}
         end,
       },
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
-        enabled = true,
         config = function()
           local move = require "nvim-treesitter.textobjects.move" ---@type table<string,fun(...)>
           local configs = require "nvim-treesitter.configs"
@@ -43,10 +40,8 @@ return {
       },
     },
     config = function()
-      local ok, configs = pcall(require, "nvim-treesitter.configs")
+      local configs = require "nvim-treesitter.configs"
 
-      -- stylua: ignore
-      if not ok then return end
       local opts = {
         auto_install = true,
         highlight = {
@@ -154,7 +149,6 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     event = { "BufReadPost", "BufWritePost", "BufNewFile" },
-    enabled = true,
     opts = { mode = "cursor", max_lines = 3 },
   },
 

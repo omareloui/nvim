@@ -30,7 +30,7 @@ return {
   dependencies = "kevinhwang91/promise-async",
   event = { "BufReadPost", "BufWritePost", "BufNewFile" },
 
-  -- stylua: ignore
+  --stylua: ignore
   keys = {
     { "zM", function() require("ufo").closeAllFolds() end, desc = "Close all folds" },
     { "zR", function() require("ufo").openAllFolds() end, desc = "Open all folds" },
@@ -38,27 +38,21 @@ return {
   },
 
   config = function()
-    local ok, ufo = pcall(require, "ufo")
-
-    -- stylua: ignore
-    if not ok then return end
+    local ufo = require "ufo"
 
     local opts = {
       provider_selector = function()
         return { "lsp", "indent" }
       end,
+
       open_fold_hl_timeout = 60,
-      close_fold_kinds_for_ft = {
-        -- default = { "imports", "comment" },
-        json = { "array" },
-      },
       fold_virt_text_handler = virtual_text_handler,
     }
 
     ufo.setup(opts)
 
     -- Highlights
-    local c = require "omareloui.config.ui.palette"
+    local c = require "common.ui.palette"
     vim.api.nvim_set_hl(0, "Folded", { fg = c.subtext1, bg = c.crust, blend = 50 })
   end,
 }

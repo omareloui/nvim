@@ -11,48 +11,28 @@ return {
         return vim.fn.executable "make" == 1
       end,
     },
+    { "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
   },
 
   config = function()
-    local present, telescope = pcall(require, "telescope")
-
-    if not present then
-      return
-    end
-
+    local telescope = require "telescope"
     local lga_actions = require "telescope-live-grep-args.actions"
-
-    local has_trouble_plugin = require "omareloui.util.has_plugin" "trouble.nvim"
-
-    local mappings = {
-      n = {
-        ["q"] = require("telescope.actions").close,
-      },
-      i = {},
-    }
-
-    if has_trouble_plugin then
-      local trouble = require "trouble.sources.telescope"
-      mappings.n["<C-q>"] = trouble.open
-      mappings.i["<C-q>"] = trouble.open
-    end
 
     local options = {
       defaults = {
-        vimgrep_arguments = {
-          "rg",
-          "-L",
-          "--color=never",
-          "--no-heading",
-          "--with-filename",
-          "--line-number",
-          "--column",
-          "--smart-case",
+        --stylua: ignore
+        vimgrep_arguments = { "rg", "-L", "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case" },
+        file_ignore_patterns = {
+          "node_modules",
+          ".cache",
+          "__pycache__",
+          "venv",
+          "%.git/",
+          "%.output/",
+          ".nuxt",
+          "vendor",
         },
-        prompt_prefix = "   ",
-        selection_caret = "  ",
-        entry_prefix = "  ",
-        selection_strategy = "reset",
+        color_devicons = true,
         sorting_strategy = "ascending",
         layout_strategy = "horizontal",
         layout_config = {
@@ -68,26 +48,14 @@ return {
           height = 0.80,
           preview_cutoff = 120,
         },
-        file_sorter = require("telescope.sorters").get_fuzzy_file,
-        file_ignore_patterns = {
-          "node_modules",
-          ".cache",
-          "__pycache__",
-          "venv",
-          ".*%.git/.*$",
-          ".output",
-          ".nuxt",
-          "vendor",
-          "dist",
-          "build",
-          "^bazel-.*/",
-        },
-        generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
-        path_display = { "truncate" },
-        color_devicons = true,
-        mappings = mappings,
       },
       extensions = {
+        fzf = {
+          fuzzy = true,
+          override_generic_sorter = true,
+          override_file_sorter = true,
+          case_mode = "smart_case",
+        },
         live_grep_args = {
           auto_quoting = true,
           mappings = {
@@ -107,23 +75,22 @@ return {
     }
 
     telescope.setup(options)
+    telescope.load_extension "fzf"
     telescope.load_extension "live_grep_args"
-
-    local set = require("omareloui.util.keymap").set
-
-    set("<leader>ff", "<Cmd>Telescope find_files follow=true hidden=true<CR>", "Find files")
-    set("<leader>fa", "<Cmd>Telescope find_files follow=true hidden=true no_ignore=true<CR>", "Find all")
-    set("<leader>fo", "<Cmd>Telescope oldfiles<CR>", "Find in recent opened files")
-    set("<leader>fb", "<Cmd>Telescope buffers<CR>", "Search in buffers")
-    set("<leader>fh", "<Cmd>Telescope help_tags<CR>", "Find in help tags")
-    set("<leader>fk", "<Cmd>Telescope keymaps<CR>", "Show key mappings")
-    set("<leader>fn", "<Cmd>Telescope file_browser files=false hide_parent_dir=true<CR>", "Open file browser")
-    set("<leader>fr", "<Cmd>Telescope file_browser cwd=~/repos<CR>", "Open all repos")
-    set("<leader>fw", telescope.extensions.live_grep_args.live_grep_args, "Live grep with args")
-
-    set("<leader>gs", "<Cmd>Telescope git_status<CR>", "Git status")
-
-    local wk = require "which-key"
-    wk.add { { "<leader>f", group = "find" } }
   end,
+
+  keys = {
+    { "<leader>ff", "<Cmd>Telescope find_files follow=true hidden=true<CR>", desc = "Find files" },
+    { "<leader>fa", "<Cmd>Telescope find_files follow=true hidden=true no_ignore=true<CR>", desc = "Find all" },
+    { "<leader>fo", "<Cmd>Telescope oldfiles<CR>", desc = "Find in recent opened files" },
+    { "<leader>fb", "<Cmd>Telescope buffers<CR>", desc = "Search in buffers" },
+    { "<leader>fh", "<Cmd>Telescope help_tags<CR>", desc = "Find in help tags" },
+    { "<leader>fk", "<Cmd>Telescope keymaps<CR>", desc = "Show key mappings" },
+    { "<leader>fn", "<Cmd>Telescope file_browser files=false hide_parent_dir=true<CR>", desc = "Open file browser" },
+    { "<leader>fr", "<Cmd>Telescope file_browser cwd=~/repos<CR>", desc = "Open all repos" },
+    --stylua: ignore
+    { "<leader>fw", function() require("telescope").extensions.live_grep_args.live_grep_args() end, desc = "Live grep with args" },
+
+    { "<leader>gs", "<Cmd>Telescope git_status<CR>", desc = "Git status" },
+  },
 }

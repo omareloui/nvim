@@ -105,7 +105,7 @@ return {
       javascript = { "eslint", "cspell" },
       javascriptreact = { "eslint", "cspell" },
       lua = { "luacheck", "cspell" },
-      markdown = { "markdownlint", "vale", "cspell" },
+      markdown = { "markdownlint", "cspell" },
       nix = { "statix", "cspell" },
       proto = { "buf", "cspell" },
       python = { "flake8" },

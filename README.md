@@ -8,8 +8,8 @@
   For windows: `winget install -e --id=JesseDuffield.lazygit`.
 - `ripgrep` <https://github.com/BurntSushi/ripgrep>
   For windows: `winget install BurntSushi.ripgrep.MSVC`.
-- `diff`
-  For windows install from <https://gnuwin32.sourceforge.net/packages/diffutils.htm>.
+- `fzf` <https://github.com/junegunn/fzf>
+  For windows: `winget install fzf`.
 
 ## Setup
 
@@ -21,7 +21,7 @@ git clone git@github.com:omareloui/nvim --depth 1 ~/.config/nvim
 git clone git@github.com:omareloui/nvim --depth 1 ~/AppData/Local/nvim
 ```
 
-Make sure to have to have the `localconfig.lua` in the right place.
+2. Make sure to have to have the `localconfig.lua` in the right place.
 
 ```bash
 cd ~/.config/nvim

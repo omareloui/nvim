@@ -6,8 +6,7 @@ local function package_to_var(args)
   return last_name:gsub("-", "_")
 end
 
-
-local cs, snippets, autosnippets = require "common.snippets.utils" ("*.lua", "LuaSnippets")
+local cs, snippets, autosnippets = require "common.snippets.utils"("*.lua", "LuaSnippets")
 
 cs(
   "req",

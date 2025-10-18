@@ -3,8 +3,23 @@ local local_config = require "common.local_config"
 local servers_config = local_config.get("lsp.servers", {}) --[[@as table<string, table>]]
 
 vim.lsp.enable(vim.tbl_keys(servers_config))
+
 for server, config in pairs(servers_config) do
   if config then
+    -- Ignore .env files for bashls
+    if server == "bashls" then
+      local original_root_dir = config.root_dir
+      config.root_dir = function(fname, ...)
+        local filename = vim.fn.fnamemodify(fname, ":t")
+        if filename == ".env" or filename:match "^%.env%." then
+          return nil
+        end
+        if original_root_dir then
+          return original_root_dir(fname, ...)
+        end
+        return vim.fs.root(fname, { ".git" })
+      end
+    end
     vim.lsp.config(server, config)
   end
 end

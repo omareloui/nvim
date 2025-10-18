@@ -124,13 +124,6 @@ return {
               ["ar"] = { query = "@parameter.outer", desc = "select outer part of a parameter" },
             },
           },
-          swap = {
-            enable = true,
-            swap_next = { ["<leader>a"] = { query = "@parameter.inner", desc = "swap with the next parameter" } },
-            swap_previous = {
-              ["<leader>A"] = { query = "@parameter.inner", desc = "swap with the previous parameter" },
-            },
-          },
         },
       }
 

@@ -219,7 +219,7 @@ return {
           },
         },
 
-        -- format_on_save = { lsp_fallback = true, async = false, timeout_ms = 2000 },
+        format_on_save = { lsp_fallback = true, timeout_ms = 2000 },
 
         formatters_by_ft = local_config.get("lsp.formatters_by_ft", {}),
 

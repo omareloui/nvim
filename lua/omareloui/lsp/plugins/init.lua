@@ -253,27 +253,6 @@ return {
     config = function()
       local lint = require "lint"
 
-      local proto_lint_pattern = "([^:]+):(%d+):(%d+):(.+)"
-      local proto_lint_groups = { "file", "lnum", "col", "message" }
-      local buf_parser = require("lint.parser").from_pattern(
-        proto_lint_pattern,
-        proto_lint_groups,
-        nil,
-        { ["source"] = "buf", ["severity"] = vim.diagnostic.severity.WARN }
-      )
-
-      lint.linters.buf = {
-        cmd = "buf",
-        args = {
-          "lint",
-          "--path",
-        },
-        stdin = false,
-        append_fname = true,
-        ignore_exitcode = true,
-        parser = buf_parser,
-      }
-
       lint.linters_by_ft = local_config.get("lsp.linters_by_ft", {})
 
       -- vim.api.nvim_create_autocmd(

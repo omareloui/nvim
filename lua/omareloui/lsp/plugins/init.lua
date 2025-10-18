@@ -16,6 +16,21 @@ local function get_servers(key)
   return formatters
 end
 
+local function try_lint()
+  local lint = require "lint"
+  local filename = vim.fn.expand "%:t"
+
+  if filename == ".env" or filename:match "^%.env%." then
+    local linters = lint.linters_by_ft[vim.bo.filetype] or {}
+    local filtered_linters = vim.tbl_filter(function(linter)
+      return linter ~= "shellcheck"
+    end, linters)
+    return lint.try_lint(filtered_linters)
+  end
+
+  return lint.try_lint()
+end
+
 return {
   { "neovim/nvim-lspconfig" },
 
@@ -236,7 +251,7 @@ return {
 
     --stylua: ignore
     keys = {
-      { "<leader>ll", function() require("lint").try_lint() end, desc = "Trigger linting for current file." },
+      { "<leader>ll", try_lint, desc = "Trigger linting for current file." },
     },
 
     config = function()
@@ -267,12 +282,10 @@ return {
 
       local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 
-      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "TextChanged" }, {
-        group = lint_augroup,
-        callback = function()
-          lint.try_lint()
-        end,
-      })
+      vim.api.nvim_create_autocmd(
+        { "BufEnter", "BufWritePost", "InsertLeave", "TextChanged" },
+        { group = lint_augroup, callback = try_lint }
+      )
 
       local cspell_ns = lint.get_namespace "cspell"
 

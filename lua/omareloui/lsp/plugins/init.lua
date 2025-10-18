@@ -20,7 +20,7 @@ local function try_lint()
   local lint = require "lint"
   local filename = vim.fn.expand "%:t"
 
-  if filename == ".env" or filename:match "^%.env%." then
+  if vim.bo.filetype == "sh" and (filename == ".env" or filename:match "^%.env%.") then
     return
   end
 
@@ -245,7 +245,6 @@ return {
     "mfussenegger/nvim-lint",
     event = { "BufReadPost", "BufWritePost", "BufNewFile" },
 
-    --stylua: ignore
     keys = {
       { "<leader>ll", try_lint, desc = "Trigger linting for current file." },
     },
@@ -255,10 +254,10 @@ return {
 
       lint.linters_by_ft = local_config.get("lsp.linters_by_ft", {})
 
-      -- vim.api.nvim_create_autocmd(
-      --   { "BufEnter", "BufWritePost", "InsertLeave", "TextChanged" },
-      --   { group = vim.api.nvim_create_augroup("lint", { clear = true }), callback = try_lint }
-      -- )
+      vim.api.nvim_create_autocmd(
+        { "BufEnter", "BufWritePost", "InsertLeave", "TextChanged" },
+        { group = vim.api.nvim_create_augroup("lint", { clear = true }), callback = try_lint }
+      )
 
       local cspell_ns = lint.get_namespace "cspell"
 

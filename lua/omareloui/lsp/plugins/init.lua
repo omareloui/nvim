@@ -21,11 +21,7 @@ local function try_lint()
   local filename = vim.fn.expand "%:t"
 
   if filename == ".env" or filename:match "^%.env%." then
-    local linters = lint.linters_by_ft[vim.bo.filetype] or {}
-    local filtered_linters = vim.tbl_filter(function(linter)
-      return linter ~= "shellcheck"
-    end, linters)
-    return lint.try_lint(filtered_linters)
+    return
   end
 
   return lint.try_lint()

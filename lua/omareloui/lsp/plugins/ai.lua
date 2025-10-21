@@ -4,7 +4,24 @@ return {
     cmd = "Copilot",
     event = "InsertEnter",
 
+    dependencies = {
+      {
+        "copilotlsp-nvim/copilot-lsp",
+        init = function()
+          vim.g.copilot_nes_debounce = 500
+        end,
+      },
+    },
+
     opts = {
+      nes = {
+        enabled = true,
+        keymap = {
+          accept_and_goto = "<leader>an",
+          accept = false,
+          dismiss = "<Esc>",
+        },
+      },
       suggestion = {
         enabled = true,
         auto_trigger = true,

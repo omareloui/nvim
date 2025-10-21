@@ -16,6 +16,8 @@ local function get_servers(key)
   return formatters
 end
 
+local linter_cache = {}
+
 local function try_lint()
   local lint = require "lint"
   local filename = vim.fn.expand "%:t"
@@ -24,7 +26,27 @@ local function try_lint()
     return
   end
 
-  return lint.try_lint()
+  -- Filter out linters whose binaries don't exist (with caching)
+  local linters = lint.linters_by_ft[vim.bo.filetype] or {}
+
+  local available_linters = vim.tbl_filter(function(linter)
+    if linter_cache[linter] ~= nil then
+      return linter_cache[linter]
+    end
+
+    local linter_config = lint.linters[linter]
+    if not linter_config then
+      linter_cache[linter] = false
+      return false
+    end
+
+    local cmd = linter_config.cmd
+    local is_available = vim.fn.executable(cmd) == 1
+    linter_cache[linter] = is_available
+    return is_available
+  end, linters)
+
+  lint.try_lint(available_linters)
 end
 
 return {

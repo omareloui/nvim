@@ -217,11 +217,11 @@ return {
 
     --stylua: ignore
     keys = {
-      { "<leader>lf", function() require("conform").format { lsp_fallback = true, async = false, timeout_ms = 2000 } end, desc = "Format file", mode = { "v", "n" }, },
+      { "<leader>lf", function() require("conform").format { lsp_fallback = true, async = false, timeout_ms = 2000 } end, desc = "Format file", mode = { "v", "n" } },
       { "<leader>nf", "<Cmd>noa up<CR>", desc = "Save buffer without formatting" },
     },
 
-    config = function(_, opts)
+    config = function()
       local nvim_config
 
       local windows_app_data = os.getenv "LOCALAPPDATA"
@@ -232,7 +232,7 @@ return {
         nvim_config = config .. "/nvim"
       end
 
-      opts = {
+      local opts = {
         formatters = {
           buildifier = {
             inherit = false,

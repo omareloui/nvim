@@ -41,6 +41,13 @@ vim.filetype.add {
   },
 }
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "templ",
+  callback = function()
+    vim.bo.commentstring = "// %s"
+  end,
+})
+
 vim.diagnostic.config {
   float = { border = "rounded", source = "if_many" },
   severity_sort = true,

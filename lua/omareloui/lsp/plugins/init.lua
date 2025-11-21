@@ -41,7 +41,7 @@ local function try_lint()
     end
 
     local cmd = linter_config.cmd
-    local is_available = vim.fn.executable(cmd) == 1
+    local is_available = cmd and type(cmd) == "string" and vim.fn.executable(cmd) == 1
     linter_cache[linter] = is_available
     return is_available
   end, linters)

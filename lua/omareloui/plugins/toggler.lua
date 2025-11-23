@@ -20,6 +20,8 @@ return {
       ["True"] = "False",
       ["right"] = "left",
       ["Right"] = "Left",
+      ["&&"] = "||",
+      ["&"] = "|",
     },
   },
 }

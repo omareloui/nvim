@@ -179,5 +179,7 @@ return {
 
     -- To parse the launch.json if it exists
     { "Joakker/lua-json5", build = "./install.sh" },
+
+    { "leoluz/nvim-dap-go", opts = {} },
   },
 }

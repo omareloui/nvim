@@ -1,13 +1,13 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    event = { "VeryLazy", "BufReadPost", "BufWritePost", "BufNewFile" },
-    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
+    lazy = false,
     build = ":TSUpdate",
+
     init = function(plugin)
       require("lazy.core.loader").add_to_rtp(plugin)
-      require "nvim-treesitter.query_predicates"
     end,
+
     dependencies = {
       {
         "HiPhish/rainbow-delimiters.nvim",
@@ -15,43 +15,16 @@ return {
           require("rainbow-delimiters.setup").setup {}
         end,
       },
-      {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        config = function()
-          local move = require "nvim-treesitter.textobjects.move" ---@type table<string,fun(...)>
-          local configs = require "nvim-treesitter.configs"
-          for name, fn in pairs(move) do
-            if name:find "goto" == 1 then
-              move[name] = function(q, ...)
-                if vim.wo.diff then
-                  local config = configs.get_module("textobjects.move")[name] ---@type table<string,string>
-                  for key, query in pairs(config or {}) do
-                    if q == query and key:find "[%]%[][cC]" then
-                      vim.cmd("normal! " .. key)
-                      return
-                    end
-                  end
-                end
-                return fn(q, ...)
-              end
-            end
-          end
-        end,
-      },
     },
-    config = function()
-      local configs = require "nvim-treesitter.configs"
 
-      local opts = {
-        auto_install = true,
-        highlight = {
-          enable = true,
-          highlight = { enable = true },
-          additional_vim_regex_highlighting = true,
-        },
-        indent = { enable = true },
-        rainbow = { enable = true },
-        ensure_installed = {
+    config = function()
+      local ts = require "nvim-treesitter"
+
+      ts.setup {
+        install_dir = vim.fn.stdpath('data') .. '/site'
+      }
+
+      langs = {
           "angular",
           "astro",
           "bash",
@@ -65,7 +38,6 @@ return {
           "jsdoc",
           "json",
           "json5",
-          "jsonc",
           "lua",
           "luadoc",
           "markdown",
@@ -84,50 +56,18 @@ return {
           "vimdoc",
           "vue",
           "yaml",
-        },
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            init_selection = "<C-Space><C-Space>",
-            node_incremental = "<C-Space>",
-            node_decremental = "<BS>",
-            scope_incremental = false,
-          },
-        },
-        textobjects = {
-          move = {
-            enable = true,
-            goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-            goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
-            goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
-            goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
-          },
-          select = {
-            enable = true,
-            keymaps = {
-              ["af"] = { query = "@function.outer", desc = "select outer part of a function" },
-              ["if"] = { query = "@function.inner", desc = "select inner part of a function" },
-
-              ["ic"] = { query = "@class.inner", desc = "select inner part of a class" },
-              ["ac"] = { query = "@class.outer", desc = "select outer part of a class" },
-
-              ["il"] = { query = "@loop.inner", desc = "select inner part of a loop" },
-              ["al"] = { query = "@loop.outer", desc = "select outer part of a loop" },
-
-              ["ii"] = { query = "@conditional.inner", desc = "select inner part of a conditional" },
-              ["ai"] = { query = "@conditional.outer", desc = "select outer part of a conditional" },
-
-              ["ib"] = { query = "@block.inner", desc = "select inner part of a block" },
-              ["ab"] = { query = "@block.outer", desc = "select outer part of a block" },
-
-              ["ir"] = { query = "@parameter.inner", desc = "select inner part of a parameter" },
-              ["ar"] = { query = "@parameter.outer", desc = "select outer part of a parameter" },
-            },
-          },
-        },
       }
 
-      configs.setup(opts)
+      ts.install(langs)
+
+      for _, lang in ipairs(langs) do
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = lang,
+          callback = function()
+            vim.treesitter.start(nil, lang)
+          end,
+        })
+      end
 
       vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
         pattern = { "*.component.html", "*.container.html" },
@@ -135,6 +75,112 @@ return {
           vim.treesitter.start(nil, "angular")
         end,
       })
+    end,
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+
+    branch = "main",
+
+    init = function()
+      vim.g.no_plugin_maps = true
+    end,
+
+    config = function()
+      local tsto = require "nvim-treesitter-textobjects"
+
+
+      local opts = {
+        select = {
+          lookahead = true,
+        },
+        move = {
+          set_jumb = false,
+        }
+      }
+
+
+      local repeat_move = require "nvim-treesitter-textobjects.repeatable_move" ---@type table<string,fun(...)>
+      local move = require "nvim-treesitter-textobjects.move" ---@type table<string,fun(...)>
+      local select = require "nvim-treesitter-textobjects.select" ---@type table<string,fun(...)>
+
+      -- Repeat Keymaps
+      vim.keymap.set({ "n", "x", "o" }, ";", repeat_move.repeat_last_move)
+      vim.keymap.set({ "n", "x", "o" }, ",", repeat_move.repeat_last_move_opposite)
+
+      -- Move Keymaps
+      vim.keymap.set({ "n", "x", "o" }, "]f", function()
+        move.goto_next_start("@function.outer", "textobjects")
+      end, { desc = "go to the start of the next function" })
+      vim.keymap.set({ "n", "x", "o" }, "]F", function()
+        move.goto_next_end("@function.outer", "textobjects")
+      end, { desc = "go to the end of the function" })
+      vim.keymap.set({ "n", "x", "o" }, "[f", function()
+        move.goto_previous_start("@function.outer", "textobjects")
+      end, { desc = "go to the start of the previous function" })
+      vim.keymap.set({ "n", "x", "o" }, "[F", function()
+        move.goto_previous_end("@function.outer", "textobjects")
+      end, { desc = "go to the start of the function" })
+
+      vim.keymap.set({ "n", "x", "o" }, "]c", function()
+        move.goto_next_start("@class.outer", "textobjects")
+      end, { desc = "go to the start of the next class" })
+      vim.keymap.set({ "n", "x", "o" }, "]C", function()
+        move.goto_next_end("@class.outer", "textobjects")
+      end, { desc = "go to the end of the class" })
+      vim.keymap.set({ "n", "x", "o" }, "[c", function()
+        move.goto_previous_start("@class.outer", "textobjects")
+      end, { desc = "go to the start of the previous class" })
+      vim.keymap.set({ "n", "x", "o" }, "[C", function()
+        move.goto_previous_end("@class.outer", "textobjects")
+      end, { desc = "go to the start of the class" })
+
+
+      -- Select Keymaps
+      vim.keymap.set({ "x", "o" }, "af", function()
+        select.select_textobject("@function.outer", "textobjects")
+      end, { desc = "select outer part of a function" })
+      vim.keymap.set({ "x", "o" }, "if", function()
+        select.select_textobject("@function.inner", "textobjects")
+      end, { desc = "select inner part of a function" })
+
+      vim.keymap.set({ "x", "o" }, "ac", function()
+        select.select_textobject("@class.outer", "textobjects")
+      end, { desc = "select outer part of a class" })
+      vim.keymap.set({ "x", "o" }, "ic", function()
+        select.select_textobject("@class.inner", "textobjects")
+      end, { desc = "select inner part of a class" })
+
+      vim.keymap.set({ "x", "o" }, "al", function()
+        select.select_textobject("@loop.outer", "textobjects")
+      end, { desc = "select outer part of a loop" })
+      vim.keymap.set({ "x", "o" }, "il", function()
+        select.select_textobject("@loop.inner", "textobjects")
+      end, { desc = "select inner part of a loop" })
+
+      vim.keymap.set({ "x", "o" }, "ai", function()
+        select.select_textobject("@conditional.outer", "textobjects")
+      end, { desc = "select outer part of a conditional" })
+      vim.keymap.set({ "x", "o" }, "ii", function()
+        select.select_textobject("@conditional.inner", "textobjects")
+      end, { desc = "select inner part of a conditional" })
+
+      vim.keymap.set({ "x", "o" }, "ab", function()
+        select.select_textobject("@block.outer", "textobjects")
+      end, { desc = "select outer part of a block" })
+      vim.keymap.set({ "x", "o" }, "ib", function()
+        select.select_textobject("@block.inner", "textobjects")
+      end, { desc = "select inner part of a block" })
+
+      vim.keymap.set({ "x", "o" }, "ar", function()
+        select.select_textobject("@parameter.outer", "textobjects")
+      end, { desc = "select outer part of a parameter" })
+      vim.keymap.set({ "x", "o" }, "ir", function()
+        select.select_textobject("@parameter.inner", "textobjects")
+      end, { desc = "select inner part of a parameter" })
+
+      tsto.setup(opts)
     end,
   },
 

@@ -17,6 +17,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local lazyopts = {
+  git = { timeout = 300 },
   ui = { border = "rounded" },
   change_detection = { notify = false },
   checker = { enabled = true, notify = false },

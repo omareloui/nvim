@@ -24,7 +24,11 @@ return {
 
     local show_detail = false
 
-    local columns = { "icon" }
+    local columns = {}
+
+    if vim.g.have_nerd_font then
+      colums = { "icon" }
+    end
 
     oil.setup {
       default_file_explorer = true,

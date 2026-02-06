@@ -1,3 +1,5 @@
+local should_install_fzf_plugin = vim.fn.executable "make" == 1
+
 return {
   "nvim-telescope/telescope.nvim",
   event = "VeryLazy",
@@ -7,9 +9,7 @@ return {
     {
       "nvim-telescope/telescope-fzf-native.nvim",
       build = "make",
-      cond = function()
-        return vim.fn.executable "make" == 1
-      end,
+      cond = should_install_fzf_plugin,
     },
     { "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
   },
@@ -32,7 +32,7 @@ return {
           ".nuxt",
           "vendor",
         },
-        color_devicons = true,
+        color_devicons = vim.g.have_nerd_font,
         sorting_strategy = "ascending",
         layout_strategy = "horizontal",
         layout_config = {
@@ -75,7 +75,11 @@ return {
     }
 
     telescope.setup(options)
-    telescope.load_extension "fzf"
+
+    if should_install_fzf_plugin then
+      telescope.load_extension "fzf"
+    end
+
     telescope.load_extension "live_grep_args"
   end,
 

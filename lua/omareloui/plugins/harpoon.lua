@@ -2,6 +2,8 @@ return {
   "ThePrimeagen/harpoon",
   event = "VeryLazy",
 
+  dependencies = { "nvim-lua/plenary.nvim" },
+
   --stylua: ignore
   keys = {
     { "<leader>ho", function() require("harpoon.ui").toggle_quick_menu() end, desc = "Open Harpoon menu" },

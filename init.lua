@@ -1,1 +1,1 @@
-require "omareloui.init"
+require "omareloui"

@@ -15,7 +15,7 @@ return {
 
     opts = {
       nes = {
-        enabled = true,
+        enabled = false,
         keymap = {
           accept_and_goto = "<leader>an",
           accept = false,
@@ -66,6 +66,9 @@ return {
     "folke/sidekick.nvim",
 
     opts = {
+      nes = {
+        enabled = false,
+      },
       cli = {
         mux = {
           backend = "zellij",

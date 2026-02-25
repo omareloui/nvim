@@ -83,6 +83,7 @@ return {
     telescope.load_extension "live_grep_args"
   end,
 
+  --stylua: ignore
   keys = {
     { "<leader>ff", "<Cmd>Telescope find_files follow=true hidden=true<CR>", desc = "Find files" },
     { "<leader>fa", "<Cmd>Telescope find_files follow=true hidden=true no_ignore=true<CR>", desc = "Find all" },
@@ -94,6 +95,7 @@ return {
     { "<leader>fr", "<Cmd>Telescope file_browser cwd=~/repos<CR>", desc = "Open all repos" },
     --stylua: ignore
     { "<leader>fw", function() require("telescope").extensions.live_grep_args.live_grep_args() end, desc = "Live grep with args" },
+    { "<leader>fc", function() require("telescope-live-grep-args.shortcuts").grep_word_under_cursor() end, desc = "Live grep with args under cursor", mode = { "n", "v" } },
 
     { "<leader>gs", "<Cmd>Telescope git_status<CR>", desc = "Git status" },
   },

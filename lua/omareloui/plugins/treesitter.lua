@@ -3,6 +3,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     lazy = false,
     build = ":TSUpdate",
+    version = "main",
 
     init = function(plugin)
       require("lazy.core.loader").add_to_rtp(plugin)
@@ -21,41 +22,41 @@ return {
       local ts = require "nvim-treesitter"
 
       ts.setup {
-        install_dir = vim.fn.stdpath('data') .. '/site'
+        install_dir = vim.fn.stdpath "data" .. "/site",
       }
 
-      langs = {
-          "angular",
-          "astro",
-          "bash",
-          "diff",
-          "dockerfile",
-          "eex",
-          "elixir",
-          "heex",
-          "html",
-          "javascript",
-          "jsdoc",
-          "json",
-          "json5",
-          "lua",
-          "luadoc",
-          "markdown",
-          "markdown_inline",
-          "prisma",
-          "python",
-          "query",
-          "regex",
-          "ron",
-          "rust",
-          "scss",
-          "toml",
-          "tsx",
-          "typescript",
-          "vim",
-          "vimdoc",
-          "vue",
-          "yaml",
+      local langs = {
+        "angular",
+        "astro",
+        "bash",
+        "diff",
+        "dockerfile",
+        "eex",
+        "elixir",
+        "heex",
+        "html",
+        "javascript",
+        "jsdoc",
+        "json",
+        "json5",
+        "lua",
+        "luadoc",
+        "markdown",
+        "markdown_inline",
+        "prisma",
+        "python",
+        "query",
+        "regex",
+        "ron",
+        "rust",
+        "scss",
+        "toml",
+        "tsx",
+        "typescript",
+        "vim",
+        "vimdoc",
+        "vue",
+        "yaml",
       }
 
       ts.install(langs)
@@ -90,16 +91,14 @@ return {
     config = function()
       local tsto = require "nvim-treesitter-textobjects"
 
-
       local opts = {
         select = {
           lookahead = true,
         },
         move = {
           set_jumb = false,
-        }
+        },
       }
-
 
       local repeat_move = require "nvim-treesitter-textobjects.repeatable_move" ---@type table<string,fun(...)>
       local move = require "nvim-treesitter-textobjects.move" ---@type table<string,fun(...)>
@@ -135,7 +134,6 @@ return {
       vim.keymap.set({ "n", "x", "o" }, "[C", function()
         move.goto_previous_end("@class.outer", "textobjects")
       end, { desc = "go to the start of the class" })
-
 
       -- Select Keymaps
       vim.keymap.set({ "x", "o" }, "af", function()

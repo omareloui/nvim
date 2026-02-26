@@ -81,22 +81,34 @@ return {
     end
 
     telescope.load_extension "live_grep_args"
-  end,
 
-  --stylua: ignore
-  keys = {
-    { "<leader>ff", "<Cmd>Telescope find_files follow=true hidden=true<CR>", desc = "Find files" },
-    { "<leader>fa", "<Cmd>Telescope find_files follow=true hidden=true no_ignore=true<CR>", desc = "Find all" },
-    { "<leader>fo", "<Cmd>Telescope oldfiles<CR>", desc = "Find in recent opened files" },
-    { "<leader>fb", "<Cmd>Telescope buffers<CR>", desc = "Search in buffers" },
-    { "<leader>fh", "<Cmd>Telescope help_tags<CR>", desc = "Find in help tags" },
-    { "<leader>fk", "<Cmd>Telescope keymaps<CR>", desc = "Show key mappings" },
-    { "<leader>fn", "<Cmd>Telescope file_browser files=false hide_parent_dir=true<CR>", desc = "Open file browser" },
-    { "<leader>fr", "<Cmd>Telescope file_browser cwd=~/repos<CR>", desc = "Open all repos" },
+    local tb = require "telescope.builtin"
+    local gas = require "telescope-live-grep-args.shortcuts"
+    local km_common_opts = { disable_devicons = not vim.g.have_nerd_font }
+
+    local function get_km_cb(fun, opts)
+      return function()
+        fun(vim.tbl_extend("force", opts or {}, km_common_opts))
+      end
+    end
+
+    local set = require("common.keymap").set
+
+    set("<leader>fa", get_km_cb(tb.find_files, { hidden = true, follow = true, no_ignore = true }), "Find all")
+    set("<leader>ff", get_km_cb(tb.find_files, { hidden = true, follow = true }), "Find files")
+
+    set("<leader>fo", get_km_cb(tb.oldfiles), "Find in recent opened files")
+    set("<leader>fb", get_km_cb(tb.buffers), "Search in buffers")
+    set("<leader>fh", get_km_cb(tb.help_tags), "Find in help tags")
+    set("<leader>fk", get_km_cb(tb.keymaps), "Show key mappings")
+    set("<leader>fn", get_km_cb(tb.file_browser, { files = false, hide_parent_dir = true }), "Open file browser")
+    set("<leader>fr", get_km_cb(tb.file_browser, { cwd = "~/repos" }), "Open all repos")
+
+    set("<leader>fw", get_km_cb(telescope.extensions.live_grep_args.live_grep_args), "Live grep with args")
     --stylua: ignore
-    { "<leader>fw", function() require("telescope").extensions.live_grep_args.live_grep_args() end, desc = "Live grep with args" },
-    { "<leader>fc", function() require("telescope-live-grep-args.shortcuts").grep_word_under_cursor() end, desc = "Live grep with args under cursor", mode = { "n", "v" } },
+    set("<leader>fc", get_km_cb(gas.grep_word_under_cursor), "Live grep with args under cursor")
+    set("<leader>fc", get_km_cb(gas.grep_visual_selection), "Live grep with args the highlighted text", { mode = "v" })
 
-    { "<leader>gs", "<Cmd>Telescope git_status<CR>", desc = "Git status" },
-  },
+    set("<leader>gs", get_km_cb(tb.git_status), "Git status")
+  end,
 }

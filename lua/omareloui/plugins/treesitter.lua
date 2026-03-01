@@ -100,7 +100,7 @@ return {
         },
       }
 
-      local _repeat = require "nvim-treesitter-textobjects.repeatable_move" ---@type table<string,fun(...)>
+      local ts_repeat = require "nvim-treesitter-textobjects.repeatable_move" ---@type table<string,fun(...)>
       local move = require "nvim-treesitter-textobjects.move" ---@type table<string,fun(...)>
       local select = require "nvim-treesitter-textobjects.select" ---@type table<string,fun(...)>
 
@@ -115,16 +115,16 @@ return {
         end
       end
 
-      --stylua: ignore start
       -- Repeatable Move Keymaps
-      set(";", _repeat.repeat_last_move, "repeat last move", km_opts)
-      set(",", _repeat.repeat_last_move_opposite, "repeat last move oppsite direction", km_opts)
+      set(";", ts_repeat.repeat_last_move, "repeat last move", km_opts)
+      set(",", ts_repeat.repeat_last_move_opposite, "repeat last move oppsite direction", km_opts)
 
-      set("f", _repeat.builtin_f_expr, "repeat move on ; and ,", { expr = true, mode = km_opts.mode })
-      set("F", _repeat.builtin_F_expr, "repeat move on ; and ,", { expr = true, mode = km_opts.mode })
-      set("t", _repeat.builtin_t_expr, "repeat move on ; and ,", { expr = true, mode = km_opts.mode })
-      set("T", _repeat.builtin_T_expr, "repeat move on ; and ,", { expr = true, mode = km_opts.mode })
+      set("f", ts_repeat.builtin_f_expr, "repeat move on ; and ,", { expr = true, mode = km_opts.mode })
+      set("F", ts_repeat.builtin_F_expr, "repeat move on ; and ,", { expr = true, mode = km_opts.mode })
+      set("t", ts_repeat.builtin_t_expr, "repeat move on ; and ,", { expr = true, mode = km_opts.mode })
+      set("T", ts_repeat.builtin_T_expr, "repeat move on ; and ,", { expr = true, mode = km_opts.mode })
 
+      --stylua: ignore start
       -- Move Keymaps
       set("]f", cb(move.goto_next_start, "@function.outer", "textobjects"), "go to the start of the next function", km_opts)
       set("]F", cb(move.goto_next_end, "@function.outer", "textobjects"), "go to the end of the function", km_opts)

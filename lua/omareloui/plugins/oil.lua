@@ -27,7 +27,7 @@ return {
     local columns = {}
 
     if vim.g.have_nerd_font then
-      colums = { "icon" }
+      columns = { "icon" }
     end
 
     oil.setup {

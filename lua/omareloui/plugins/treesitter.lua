@@ -100,83 +100,56 @@ return {
         },
       }
 
-      local repeat_move = require "nvim-treesitter-textobjects.repeatable_move" ---@type table<string,fun(...)>
+      local _repeat = require "nvim-treesitter-textobjects.repeatable_move" ---@type table<string,fun(...)>
       local move = require "nvim-treesitter-textobjects.move" ---@type table<string,fun(...)>
       local select = require "nvim-treesitter-textobjects.select" ---@type table<string,fun(...)>
 
-      -- Repeat Keymaps
-      vim.keymap.set({ "n", "x", "o" }, ";", repeat_move.repeat_last_move)
-      vim.keymap.set({ "n", "x", "o" }, ",", repeat_move.repeat_last_move_opposite)
+      local set = require("common.keymap").set
+
+      local km_opts = { mode = { "n", "x", "o" } }
+      local hg_km_opts = { mode = { "x", "o" } }
+
+      local function cb(fn, arg1, arg2)
+        return function()
+          return fn(arg1, arg2)
+        end
+      end
+
+      --stylua: ignore start
+      -- Repeatable Move Keymaps
+      set(";", _repeat.repeat_last_move, "repeat last move", km_opts)
+      set(",", _repeat.repeat_last_move_opposite, "repeat last move oppsite direction", km_opts)
+
+      set("f", _repeat.builtin_f_expr, "repeat move on ; and ,", { expr = true, mode = km_opts.mode })
+      set("F", _repeat.builtin_F_expr, "repeat move on ; and ,", { expr = true, mode = km_opts.mode })
+      set("t", _repeat.builtin_t_expr, "repeat move on ; and ,", { expr = true, mode = km_opts.mode })
+      set("T", _repeat.builtin_T_expr, "repeat move on ; and ,", { expr = true, mode = km_opts.mode })
 
       -- Move Keymaps
-      vim.keymap.set({ "n", "x", "o" }, "]f", function()
-        move.goto_next_start("@function.outer", "textobjects")
-      end, { desc = "go to the start of the next function" })
-      vim.keymap.set({ "n", "x", "o" }, "]F", function()
-        move.goto_next_end("@function.outer", "textobjects")
-      end, { desc = "go to the end of the function" })
-      vim.keymap.set({ "n", "x", "o" }, "[f", function()
-        move.goto_previous_start("@function.outer", "textobjects")
-      end, { desc = "go to the start of the previous function" })
-      vim.keymap.set({ "n", "x", "o" }, "[F", function()
-        move.goto_previous_end("@function.outer", "textobjects")
-      end, { desc = "go to the start of the function" })
+      set("]f", cb(move.goto_next_start, "@function.outer", "textobjects"), "go to the start of the next function", km_opts)
+      set("]F", cb(move.goto_next_end, "@function.outer", "textobjects"), "go to the end of the function", km_opts)
+      set("[f", cb(move.goto_previous_start, "@function.outer", "textobjects"), "go to the start of the previous function", km_opts)
+      set("[F", cb(move.goto_previous_end, "@function.outer", "textobjects"), "go to the start of the function", km_opts)
 
-      vim.keymap.set({ "n", "x", "o" }, "]c", function()
-        move.goto_next_start("@class.outer", "textobjects")
-      end, { desc = "go to the start of the next class" })
-      vim.keymap.set({ "n", "x", "o" }, "]C", function()
-        move.goto_next_end("@class.outer", "textobjects")
-      end, { desc = "go to the end of the class" })
-      vim.keymap.set({ "n", "x", "o" }, "[c", function()
-        move.goto_previous_start("@class.outer", "textobjects")
-      end, { desc = "go to the start of the previous class" })
-      vim.keymap.set({ "n", "x", "o" }, "[C", function()
-        move.goto_previous_end("@class.outer", "textobjects")
-      end, { desc = "go to the start of the class" })
+      set("]c", cb(move.goto_next_start, "@class.outer", "textobjects"), "go to the start of the next class", km_opts)
+      set("]C", cb(move.goto_next_end, "@class.outer", "textobjects"), "go to the end of the class", km_opts)
+      set("[c", cb(move.goto_previous_start, "@class.outer", "textobjects"), "go to the start of the previous class", km_opts)
+      set("[C", cb(move.goto_previous_end, "@class.outer", "textobjects"), "go to the start of the class", km_opts)
 
       -- Select Keymaps
-      vim.keymap.set({ "x", "o" }, "af", function()
-        select.select_textobject("@function.outer", "textobjects")
-      end, { desc = "select outer part of a function" })
-      vim.keymap.set({ "x", "o" }, "if", function()
-        select.select_textobject("@function.inner", "textobjects")
-      end, { desc = "select inner part of a function" })
-
-      vim.keymap.set({ "x", "o" }, "ac", function()
-        select.select_textobject("@class.outer", "textobjects")
-      end, { desc = "select outer part of a class" })
-      vim.keymap.set({ "x", "o" }, "ic", function()
-        select.select_textobject("@class.inner", "textobjects")
-      end, { desc = "select inner part of a class" })
-
-      vim.keymap.set({ "x", "o" }, "al", function()
-        select.select_textobject("@loop.outer", "textobjects")
-      end, { desc = "select outer part of a loop" })
-      vim.keymap.set({ "x", "o" }, "il", function()
-        select.select_textobject("@loop.inner", "textobjects")
-      end, { desc = "select inner part of a loop" })
-
-      vim.keymap.set({ "x", "o" }, "ai", function()
-        select.select_textobject("@conditional.outer", "textobjects")
-      end, { desc = "select outer part of a conditional" })
-      vim.keymap.set({ "x", "o" }, "ii", function()
-        select.select_textobject("@conditional.inner", "textobjects")
-      end, { desc = "select inner part of a conditional" })
-
-      vim.keymap.set({ "x", "o" }, "ab", function()
-        select.select_textobject("@block.outer", "textobjects")
-      end, { desc = "select outer part of a block" })
-      vim.keymap.set({ "x", "o" }, "ib", function()
-        select.select_textobject("@block.inner", "textobjects")
-      end, { desc = "select inner part of a block" })
-
-      vim.keymap.set({ "x", "o" }, "ar", function()
-        select.select_textobject("@parameter.outer", "textobjects")
-      end, { desc = "select outer part of a parameter" })
-      vim.keymap.set({ "x", "o" }, "ir", function()
-        select.select_textobject("@parameter.inner", "textobjects")
-      end, { desc = "select inner part of a parameter" })
+      set("af", cb(select.select_textobject, "@function.outer", "textobjects"), "select outer part of a function", hg_km_opts)
+      set("if", cb(select.select_textobject, "@function.inner", "textobjects"), "select inner part of a function", hg_km_opts)
+      set("ac", cb(select.select_textobject, "@class.outer", "textobjects"), "select outer part of a class", hg_km_opts)
+      set("ic", cb(select.select_textobject, "@class.inner", "textobjects"), "select inner part of a class", hg_km_opts)
+      set("al", cb(select.select_textobject, "@loop.outer", "textobjects"), "select outer part of a loop", hg_km_opts)
+      set("il", cb(select.select_textobject, "@loop.inner", "textobjects"), "select inner part of a loop", hg_km_opts)
+      set("ai", cb(select.select_textobject, "@conditional.outer", "textobjects"), "select outer part of a conditional", hg_km_opts)
+      set("ii", cb(select.select_textobject, "@conditional.inner", "textobjects"), "select inner part of a conditional", hg_km_opts)
+      set("ab", cb(select.select_textobject, "@block.outer", "textobjects"), "select outer part of a block", hg_km_opts)
+      set("ib", cb(select.select_textobject, "@block.inner", "textobjects"), "select inner part of a block", hg_km_opts)
+      set("ar", cb(select.select_textobject, "@parameter.outer", "textobjects"), "select outer part of a parameter", hg_km_opts)
+      set("ir", cb(select.select_textobject, "@parameter.inner", "textobjects"), "select inner part of a parameter", hg_km_opts)
+      --stylua: ignore end
 
       tsto.setup(opts)
     end,

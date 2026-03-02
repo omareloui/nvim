@@ -14,6 +14,7 @@ return {
     },
 
     opts = {
+      disable_limit_reached_message = true,
       nes = {
         enabled = false,
         keymap = {

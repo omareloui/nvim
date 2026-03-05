@@ -73,6 +73,7 @@ set("j", "v:count == 0 ? 'gj' : 'j'", "Move down", { expr = true, silent = true,
 
 set("<", "<gv", "Indent line backwards", { mode = "v" })
 set(">", ">gv", "Indent line forwards", { mode = "v" })
+set("g<C-v>", "`[v`]", "Highlight last pasted")
 
 set("<leader>y", '"+y', "Yank to the system clipboard", { remap = true, mode = { "n", "v" } })
 set("<leader>Y", '"+Y', "Yank to the system clipboard", { remap = true })

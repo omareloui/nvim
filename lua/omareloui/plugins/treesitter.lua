@@ -3,7 +3,8 @@ return {
     "nvim-treesitter/nvim-treesitter",
     lazy = false,
     build = ":TSUpdate",
-    version = "main",
+
+    branch = "main",
 
     init = function(plugin)
       require("lazy.core.loader").add_to_rtp(plugin)

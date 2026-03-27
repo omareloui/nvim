@@ -1,7 +1,7 @@
 return {
   "laytan/cloak.nvim",
   event = { "BufReadPost", "BufWritePost", "BufNewFile" },
-  config = {
+  opts = {
     enabled = true,
     cloak_character = "*",
     highlight_group = "Comment",

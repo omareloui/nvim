@@ -7,6 +7,8 @@ end
 
 vim.g.have_nerd_font = true
 
+vim.g.have_node = vim.fn.executable "node" == 1
+
 vim.o.swapfile = false
 vim.opt.colorcolumn = { "80", "120" }
 vim.o.cursorcolumn = false

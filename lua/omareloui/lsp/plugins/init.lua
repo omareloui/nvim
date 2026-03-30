@@ -278,6 +278,13 @@ return {
         { group = vim.api.nvim_create_augroup("lint", { clear = true }), callback = try_lint }
       )
 
+      lint.linters.markdownlint.args = {
+        "--disable",
+        "MD013", -- MD013/line-length Line length
+        "MD036", -- MD036/no-emphasis-as-heading Emphasis used instead of a heading
+        "--stdin",
+      }
+
       local cspell_ns = lint.get_namespace "cspell"
 
       vim.diagnostic.config({

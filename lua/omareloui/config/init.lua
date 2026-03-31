@@ -18,7 +18,7 @@ vim.o.foldcolumn = "0"
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
-vim.opt.fillchars = { eob = " ", foldopen = "", foldclose = "" }
+vim.opt.fillchars = { eob = " ", fold = " ", foldopen = "", foldclose = "", foldinner = " ", foldsep = " " }
 
 vim.o.hlsearch = true
 vim.o.linebreak = true

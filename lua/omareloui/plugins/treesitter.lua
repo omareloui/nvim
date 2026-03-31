@@ -44,7 +44,6 @@ return {
         "latex",
         "lua",
         "luadoc",
-        "lypst",
         "markdown",
         "markdown_inline",
         "prisma",

@@ -34,6 +34,8 @@ return {
   keys = {
     { "zM", function() require("ufo").closeAllFolds() end, desc = "Close all folds" },
     { "zR", function() require("ufo").openAllFolds() end, desc = "Open all folds" },
+    { "zm", function() require("ufo").closeFoldsWith() end, desc = "Close fold" },
+    { "zr", function() require("ufo").openFoldsExceptKinds() end, desc = "Open fold" },
     { "zK", function() require("ufo").peekFoldedLinesUnderCursor() end, desc = "Peek folds" },
   },
 
@@ -41,8 +43,8 @@ return {
     local ufo = require "ufo"
 
     local opts = {
-      provider_selector = function()
-        return { "lsp", "indent" }
+      provider_selector = function(_bufnr, _filetype, _buftype)
+        return { "treesitter", "indent" }
       end,
 
       open_fold_hl_timeout = 60,

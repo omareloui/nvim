@@ -285,6 +285,14 @@ return {
         "--stdin",
       }
 
+      lint.linters.yamllint.args = {
+        "-d",
+        "{rules: {line-length: {max: 120, level: warning}}}",
+        "-f",
+        "parsable",
+        "-",
+      }
+
       local cspell_ns = lint.get_namespace "cspell"
 
       vim.diagnostic.config({

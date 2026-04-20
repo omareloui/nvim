@@ -147,8 +147,8 @@ return {
       dependencies = { "nvim-neotest/nvim-nio" },
       -- stylua: ignore
       keys = {
-        { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
-        { "<leader>dh", function() require("dapui").eval() end, desc = "Debug: Hover", mode = {"n", "v"} },
+        { "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI" },
+        { "<leader>dh", function() require("dapui").eval() end,     desc = "Debug: Hover", mode = { "n", "v" } },
       },
       opts = { ensure_installed = { "delve" } },
       config = function()
@@ -181,5 +181,20 @@ return {
     { "Joakker/lua-json5", build = "./install.sh" },
 
     { "leoluz/nvim-dap-go", opts = {} },
+
+    {
+      "mfussenegger/nvim-dap-python",
+      lazy = true,
+      config = function()
+        local python = vim.fn.expand "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+        require("dap-python").setup(python)
+      end,
+      -- stylua: ignore
+      keys = {
+        { "<leader>dap", function() require("dap-python").test_method() end, desc = "Debug: Test Method" },
+        { "<leader>daf", function() require("dap-python").test_class() end, desc = "Debug: Test Class" },
+        { "<leader>das", function() require("dap-python").debug_selection() end, desc = "Debug: Debug Selection" },
+      },
+    },
   },
 }

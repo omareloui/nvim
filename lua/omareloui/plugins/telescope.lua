@@ -16,12 +16,26 @@ return {
 
   config = function()
     local telescope = require "telescope"
+    local actions = require "telescope.actions"
     local lga_actions = require "telescope-live-grep-args.actions"
+
+    local grep_args = { "--color=never", "--no-heading", "--with-filename", "--line-number", "--column" }
+
+    -- Remove the trailing '$*' if it exists in standard grep configs
+    local grepprg_str = vim.o.grepprg:gsub("%s%s*%*%$$", "")
+
+    local index = 1
+    for word in grepprg_str:gmatch "%S+" do
+      -- Filter out --vimgrep as it conflicts with telescope's parsing flags
+      if word ~= "--vimgrep" then
+        table.insert(grep_args, index, word)
+        index = index + 1
+      end
+    end
 
     local options = {
       defaults = {
-        --stylua: ignore
-        vimgrep_arguments = { "rg", "-L", "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case" },
+        vimgrep_arguments = grep_args,
         file_ignore_patterns = {
           "node_modules",
           ".cache",
@@ -31,6 +45,12 @@ return {
           "%.output/",
           ".nuxt",
           "vendor",
+        },
+        mappings = {
+          i = {
+            ["<esc>"] = actions.close,
+            ["<C-o>"] = actions.send_selected_to_qflist,
+          },
         },
         color_devicons = vim.g.have_nerd_font,
         sorting_strategy = "ascending",

@@ -62,6 +62,13 @@ vim.opt.iskeyword:append "-"
 -- stop continuous comments
 vim.api.nvim_create_autocmd("FileType", { command = "set formatoptions-=cro" })
 
+vim.o.exrc = true -- accept `.nvim.lua` as per project config
+
+if vim.fn.executable "rg" then
+  vim.o.grepprg = "rg --vimgrep --hidden -L --no-heading -g '!.git'"
+  vim.opt.grepformat = "%f:%l:%c:%m"
+end
+
 --- Global keybindings ---
 
 local set = require("common.keymap").set

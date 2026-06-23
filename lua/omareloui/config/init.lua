@@ -195,3 +195,10 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
+
+-- Automatically open the quickfix window after certain quickfix commands are executed.
+vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+  group = vim.api.nvim_create_augroup("AutoOpenQuickfix", { clear = true }),
+  pattern = { "[^l]*" },
+  command = "cwindow",
+})

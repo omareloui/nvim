@@ -99,7 +99,43 @@ set("<leader>su", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", "Repla
 
 set("<leader>cz", "1z=", "Select the first spelling suggestion", { mode = { "n", "v" } })
 
-set("<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode", { mode = "t" })
+-- set("<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode", { mode = "t" })
+
+-- Better insert mode on empty indented lines
+for _, bind in ipairs { "i", "a", "A" } do
+  set(bind, function()
+    if vim.fn.getline("."):match "^%s*$" then
+      return [["_cc]]
+    else
+      return bind
+    end
+  end)
+end
+
+-- Remove quickfix item
+_G.remove_qf_item = function()
+  local qf_list = vim.fn.getqflist()
+  local cur_qf_idx = vim.fn.line "." - 1
+
+  if #qf_list > 0 then
+    table.remove(qf_list, cur_qf_idx + 1)
+    vim.fn.setqflist(qf_list, "r")
+  end
+
+  if #qf_list > 0 then
+    vim.cmd((cur_qf_idx + 1) .. "cfirst")
+    vim.cmd "copen"
+  else
+    vim.cmd "cclose"
+  end
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "qf",
+  callback = function()
+    vim.api.nvim_buf_set_keymap(0, "n", "dd", ":lua remove_qf_item()<CR>", { noremap = true, silent = true })
+  end,
+})
 
 --- Global autocommands ---
 

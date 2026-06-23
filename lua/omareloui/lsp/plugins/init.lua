@@ -290,6 +290,7 @@ return {
       vim.diagnostic.config({
         virtual_text = false,
         signs = false,
+        update_in_insert = true,
       }, cspell_ns)
 
       lint.linters.cspell = require("lint.util").wrap(lint.linters.cspell, function(diagnostic)

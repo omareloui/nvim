@@ -26,7 +26,7 @@ vim.o.list = true
 vim.opt.listchars = { tab = "» ", lead = "·", trail = "·", eol = "↲", nbsp = "☠" }
 vim.o.relativenumber = true
 vim.o.scrolloff = math.floor(vim.o.lines / 2) - 3
-vim.o.sidescrolloff = math.floor(vim.o.columns / 2) - 3
+vim.o.sidescrolloff = math.floor(vim.o.columns / 3)
 vim.o.spell = false
 vim.opt.spelllang = { "en_us", "es" }
 vim.o.spelloptions = "camel"

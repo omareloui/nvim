@@ -109,7 +109,7 @@ for _, bind in ipairs { "i", "a", "A" } do
     else
       return bind
     end
-  end)
+  end, "", { expr = true })
 end
 
 -- Remove quickfix item

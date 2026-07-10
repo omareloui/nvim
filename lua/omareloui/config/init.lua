@@ -64,7 +64,7 @@ vim.api.nvim_create_autocmd("FileType", { command = "set formatoptions-=cro" })
 
 vim.o.exrc = true -- accept `.nvim.lua` as per project config
 
-if vim.fn.executable "rg" then
+if vim.fn.executable "rg" == 1 then
   vim.o.grepprg = "rg --vimgrep --hidden -L --no-heading -g '!.git'"
   vim.opt.grepformat = "%f:%l:%c:%m"
 end

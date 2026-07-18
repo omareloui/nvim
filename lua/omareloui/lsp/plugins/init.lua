@@ -229,6 +229,14 @@ return {
         nvim_config = config .. "/nvim"
       end
 
+      local prettier_config = {
+        options = {
+          ft_parsers = {
+            svg = "html",
+          },
+        },
+      }
+
       local opts = {
         formatters = {
           buildifier = {
@@ -240,13 +248,8 @@ return {
             prepend_args = { "-c", nvim_config .. "/lua/common/lsp/sql_formatter.json" },
           },
 
-          prettier = {
-            options = {
-              ft_parsers = {
-                svg = "html",
-              },
-            },
-          },
+          prettier = prettier_config,
+          prettierd = prettier_config,
         },
 
         format_on_save = { lsp_fallback = true, timeout_ms = 2000 },
@@ -283,6 +286,14 @@ return {
         "MD013", -- MD013/line-length Line length
         "MD036", -- MD036/no-emphasis-as-heading Emphasis used instead of a heading
         "--stdin",
+      }
+
+      lint.linters.yamllint.args = {
+        "-d",
+        "{extends: default, rules: {line-length: disabled, braces: {max-spaces-inside: 1, max-spaces-inside-empty: 0}}}",
+        "-f",
+        "parsable",
+        "-",
       }
 
       local cspell_ns = lint.get_namespace "cspell"

@@ -1,5 +1,42 @@
 local should_install_fzf_plugin = vim.fn.executable "make" == 1
 
+local function get_grepprg()
+  local common_args = {
+    "-L",
+    "--hidden",
+    "--no-heading",
+    "--line-number",
+  }
+
+  local grep_args = {
+    "grep",
+    "-b",
+    "--ignore-case",
+    "--recursive",
+    "--no-messages",
+  }
+
+  local ripgrep_args = {
+    "rg",
+    "--color=never",
+    "--with-filename",
+    "--line-number",
+    "--column",
+    "--smart-case",
+  }
+
+  local args = {}
+
+  local is_ripgrep = vim.o.grepprg:find "rg" ~= nil
+  if is_ripgrep then
+    args = vim.list_extend(ripgrep_args, common_args)
+  else
+    args = vim.list_extend(grep_args, common_args)
+  end
+
+  return args
+end
+
 return {
   "nvim-telescope/telescope.nvim",
   event = "VeryLazy",
@@ -19,23 +56,9 @@ return {
     local actions = require "telescope.actions"
     local lga_actions = require "telescope-live-grep-args.actions"
 
-    local grep_args = { "--color=never", "--no-heading", "--with-filename", "--line-number", "--column" }
-
-    -- Remove the trailing '$*' if it exists in standard grep configs
-    local grepprg_str = vim.o.grepprg:gsub("%s%s*%*%$$", "")
-
-    local index = 1
-    for word in grepprg_str:gmatch "%S+" do
-      -- Filter out --vimgrep as it conflicts with telescope's parsing flags
-      if word ~= "--vimgrep" then
-        table.insert(grep_args, index, word)
-        index = index + 1
-      end
-    end
-
     local options = {
       defaults = {
-        vimgrep_arguments = grep_args,
+        vimgrep_arguments = get_grepprg(),
         file_ignore_patterns = {
           "node_modules",
           ".cache",

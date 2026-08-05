@@ -99,6 +99,8 @@ set("<leader>su", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", "Repla
 
 set("<leader>cz", "1z=", "Select the first spelling suggestion", { mode = { "n", "v" } })
 
+set("=", 'c<C-r>=<C-r>"<CR><Esc>', "Evaluate math selection", { mode = { "v" } })
+
 -- set("<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode", { mode = "t" })
 
 -- Better insert mode on empty indented lines

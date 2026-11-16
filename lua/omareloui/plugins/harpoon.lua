@@ -1,22 +1,55 @@
+local function select(i)
+  return function()
+    (require "harpoon"):list():select(i)
+  end
+end
+
 return {
   "ThePrimeagen/harpoon",
+  branch = "harpoon2",
   event = "VeryLazy",
 
   dependencies = { "nvim-lua/plenary.nvim" },
 
-  --stylua: ignore
   keys = {
-    { "<leader>ho", function() require("harpoon.ui").toggle_quick_menu() end, desc = "Open Harpoon menu" },
-    { "<leader>ha", function() require("harpoon.mark").add_file() end, desc = "Add to Harpoon" },
-    { "<leader>hh", function() require("harpoon.ui").nav_prev() end, desc = "Go to previous Harpoon file" },
-    { "<leader>hl", function() require("harpoon.ui").nav_next() end, desc = "Go to next Harpoon file" },
-    { "<A-1>", function() require("harpoon.ui").nav_file(1) end, desc = "Go to Harpoon file 1" },
-    { "<A-2>", function() require("harpoon.ui").nav_file(2) end, desc = "Go to Harpoon file 2" },
-    { "<A-3>", function() require("harpoon.ui").nav_file(3) end, desc = "Go to Harpoon file 3" },
-    { "<A-4>", function() require("harpoon.ui").nav_file(4) end, desc = "Go to Harpoon file 4" },
-    { "<A-5>", function() require("harpoon.ui").nav_file(5) end, desc = "Go to Harpoon file 5" },
-    { "<A-6>", function() require("harpoon.ui").nav_file(6) end, desc = "Go to Harpoon file 6" },
+    {
+      "<leader>ho",
+      function()
+        local harpoon = require "harpoon"
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end,
+      desc = "Open Harpoon menu",
+    },
+    {
+      "<leader>ha",
+      function()
+        (require "harpoon"):list():add()
+      end,
+      desc = "Add to Harpoon",
+    },
+    {
+      "<leader>hh",
+      function()
+        (require "harpoon"):list():prev { ui_nav_wrap = true }
+      end,
+      desc = "Go to previous Harpoon file",
+    },
+    {
+      "<leader>hl",
+      function()
+        (require "harpoon"):list():next { ui_nav_wrap = true }
+      end,
+      desc = "Go to next Harpoon file",
+    },
+    { "<A-1>", select(1), desc = "Go to Harpoon file 1" },
+    { "<A-2>", select(2), desc = "Go to Harpoon file 2" },
+    { "<A-3>", select(3), desc = "Go to Harpoon file 3" },
+    { "<A-4>", select(4), desc = "Go to Harpoon file 4" },
+    { "<A-5>", select(5), desc = "Go to Harpoon file 5" },
+    { "<A-6>", select(6), desc = "Go to Harpoon file 6" },
   },
 
-  opts = {},
+  config = function()
+    require("harpoon"):setup()
+  end,
 }

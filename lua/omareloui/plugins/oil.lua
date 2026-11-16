@@ -11,7 +11,7 @@ end
 
 return {
   "stevearc/oil.nvim",
-  event = { "VeryLazy", "BufReadPost", "BufWritePost", "BufNewFile", "BufReadPre" },
+  lazy = false,
 
   init = function()
     -- Disable netrw in favor of Oil.nivm

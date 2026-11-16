@@ -5,8 +5,6 @@ if HOME ~= nil then
   undodir = HOME .. "/.cache/nvim/undodir"
 end
 
-vim.g.have_nerd_font = true
-
 vim.g.have_node = vim.fn.executable "node" == 1
 
 vim.o.swapfile = false
